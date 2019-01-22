@@ -24,9 +24,10 @@ class DatabaseConnect:
             firstname VARCHAR(100)  NOT NULL,
             lastname VARCHAR(100)  NOT NULL,
             othername VARCHAR(100)  NOT NULL,
+            phonenumber VARCHAR(15)  NOT NULL,
             email UNIQUE VARCHAR(100)NOT NULL,
             password VARCHAR(100) NOT NULL,
-            create_at VARCHAR(100) NOT NULL,
+            created_at VARCHAR(100) NOT NULL,
             admin BOOLEAN DEFAULT FALSE 
             )""",
             """
@@ -53,7 +54,7 @@ class DatabaseConnect:
 
     def drop_tables(self):
         """function that drops the tables"""
-        query = "TRUNCATE TABLE users, parcel_orders RESTART IDENTITY "
+        query = "TRUNCATE TABLE users, interventions RESTART IDENTITY "
         self.cur.execute(query)
         return print('tables dropped successfully')
 

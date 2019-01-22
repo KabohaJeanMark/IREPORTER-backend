@@ -1,8 +1,8 @@
 from flask import request, jsonify
-from restapi.models.user_models import Users, BaseUsers, UsersDB
+from restapi.models.user_models import Users
 import re
 
-UsersList = UsersDB()
+
 
 
 class UserController:
@@ -11,16 +11,18 @@ class UserController:
         pass
 
     def create_users(self):
+        users = Users()
+
         data = request.get_json()
 
         first_name = data.get("first_name")
         last_name = data.get("last_name")
         other_names = data.get("other_names")
         phone_number = str(data.get("phone_number"))
-        user_id = len(UsersList.user_list) + 1
         user_name = data.get("user_name")
         str(user_name).replace(" ", "")
         email = data.get("email")
+        password = data.get("password")
         is_admin = False
 
 
@@ -46,34 +48,16 @@ class UserController:
                 "message": "The email address is in the wrong format"
             })
             
-
-        myUser = Users(BaseUsers(
-            first_name, last_name, other_names, phone_number), user_id, email, user_name, is_admin)
-
-        UsersList.add_user(myUser)
-        return jsonify({
-            "status": 201,
-            "data": [{
-                "id": myUser.user_id,
-                "message": "Created new user"
-            }]
-        })
+        users.register_users(username=data['username'],
+                         password=data['password'],
+                         email=data['email'],
+                         phonenumber=data['phone_number'],
+                         firstname= data['first_name'],
+                         lastname= data['last_name'],
+                         othernames= data['other_names'])
 
     def get_all_users(self):
-        return jsonify({
-            "status": 200,
-            "data": [user.to_json() for user in UsersList.user_list]
-        })
+        pass
 
     def get_a_single_user(self, user_id):
-        user = UsersList.get_one_user_by_id(user_id)
-        if user:
-            return jsonify({
-                "status": 200,
-                "data": user.to_json()
-            })
-        else:
-            return jsonify({
-                "status": 404,
-                "message": "That user id is not found"
-            })
+        pass
