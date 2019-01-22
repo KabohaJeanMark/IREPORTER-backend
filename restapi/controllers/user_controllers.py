@@ -3,8 +3,6 @@ from restapi.models.user_models import Users
 import re
 
 
-
-
 class UserController:
 
     def __init__(self):
@@ -17,16 +15,28 @@ class UserController:
 
         first_name = data.get("first_name")
         last_name = data.get("last_name")
-        other_names = data.get("other_names")
+        othernames = data.get("othernames")
         phone_number = str(data.get("phone_number"))
-        user_name = data.get("user_name")
+        user_name = data.get("username")
         str(user_name).replace(" ", "")
         email = data.get("email")
         password = data.get("password")
-        is_admin = False
 
+        user_postman_inputs = [first_name, last_name,
+                               othernames, phone_number, user_name, email, password]
+        for value in user_postman_inputs:
+            if not value:
+                return jsonify({
+                    "status": "400",
+                    "message": "A field value is missing"
+                })
+        if not data:
+            return jsonify({
+                "status": "400",
+                "message": "A key is missing"
+            })
 
-        if not isinstance(first_name, str) or not isinstance(last_name, str) or not isinstance(other_names,str):
+        if not isinstance(first_name, str) or not isinstance(last_name, str) or not isinstance(othernames, str):
             return jsonify({
                 "status": "404",
                 "message": "All the names have to be of type string"
@@ -47,14 +57,17 @@ class UserController:
                 "status": "404",
                 "message": "The email address is in the wrong format"
             })
-            
         users.register_users(username=data['username'],
-                         password=data['password'],
-                         email=data['email'],
-                         phonenumber=data['phone_number'],
-                         firstname= data['first_name'],
-                         lastname= data['last_name'],
-                         othernames= data['other_names'])
+                             email=data['email'],
+                             password=data['password'],
+                             firstname=data['first_name'],
+                             lastname=data['last_name'],
+                             othernames=data['othernames'],
+                             phonenumber=data['phone_number'],)
+        return jsonify({
+            "data": 201,
+            "message": "User has been succesfully created"
+        })
 
     def get_all_users(self):
         pass
