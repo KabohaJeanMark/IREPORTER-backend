@@ -9,7 +9,7 @@ myUser = UserController()
 
 @BP.route("/users", methods=["POST"])
 def add_user():
-    return myUser.create_users(), 201
+    return myUser.create_users(), 200
 
 
 @BP.route("/users", methods=["GET"])

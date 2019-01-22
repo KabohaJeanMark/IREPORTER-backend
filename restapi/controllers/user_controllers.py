@@ -57,6 +57,19 @@ class UserController:
                 "status": "404",
                 "message": "The email address is in the wrong format"
             })
+        user_exist = users.check_username_exists(username=data['username'])
+        if user_exist:
+            return jsonify({
+                "status": 400,
+                "message": "That username is already taken"
+            })
+        email_taken = users.check_email_exists(email=data['email'])
+        if email_taken:
+            return jsonify({
+                "status": 400,
+                "message": "That email is already taken"
+            })
+
         users.register_users(username=data['username'],
                              email=data['email'],
                              password=data['password'],
