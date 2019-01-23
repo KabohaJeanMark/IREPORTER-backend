@@ -1,52 +1,21 @@
-import datetime
+from datetime import datetime
+from restapi.models.database import DatabaseConnect
 
 
-class BaseRedFlags():
-    def __init__(self, created_by, incident_type):
-
-        self.created_by = created_by
-        self.incident_type = incident_type
-        self.created_on = datetime.datetime.now()
-
-
-class Redflags():
-    def __init__(self, base, redflag_id, status, images, videos, comment, location):
-        self.base = base
-        self.redflag_id = redflag_id
-        self.status = status
-        self.images = images
-        self.videos = videos
-        self.comment = comment
-        self.location = location
-
-    def to_json(self):
-        return{
-
-            "created by": self.base.created_by,
-            "incident type": self.base.incident_type,
-            "id": self.redflag_id,
-            "status": self.status,
-            "images": self.images,
-            "videos": self.videos,
-            "comments": self.comment,
-            "location": self.location,
-            "created on": datetime.datetime.now()
-        }
-
-
-class RedFlagsDb():
-
+class Interventions:
     def __init__(self):
-        self.incident_list = []
+        self.conn = DatabaseConnect()
 
-    def add_redflag(self, redflag):
-        self.incident_list.append(redflag)
+    def create_intervention(self, location, status, images, videos, comment, created_by):
+        status = 'draft'
+        created_at = datetime.now()
+        sql = """INSERT INTO interventions(\
+                location, status, images, videos,\
+                comment, created_by ,created_at)"\
+              " VALUES('{}','{}','{}','{}','{}','{}','{}')RETURNING user_id"""\
+              .format(location, status, images, videos, comment, created_by, created_at)
+        self.conn.cur.execute(sql)
+        
 
-    def get_redflags(self):
-        return self.incident_list
-
-    def get_one_redflag_by_id(self, redflag_id):
-        for redflag in self.incident_list:
-            if redflag.redflag_id == redflag_id:
-                return redflag
-        return None
+    def get_latest_record(self):
+        pass
