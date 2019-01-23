@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify
 from restapi.controllers.user_controllers import UserController
-
+from flask_jwt_extended import jwt_required
 
 BP = Blueprint("user_views", __name__, url_prefix="/api/v1")
 
@@ -9,7 +9,7 @@ myUser = UserController()
 
 @BP.route("/users", methods=["POST"])
 def add_user():
-    return myUser.create_users(), 200
+    return myUser.create_users(), 201
 
 
 @BP.route("/auth/login", methods=["POST"])

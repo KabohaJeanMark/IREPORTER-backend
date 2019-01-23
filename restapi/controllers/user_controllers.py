@@ -1,5 +1,9 @@
 from flask import request, jsonify
+from flask_jwt_extended import create_access_token
 from restapi.models.user_models import Users
+import datetime
+
+
 import re
 
 
@@ -62,15 +66,16 @@ class UserController:
                 "message": "That email is already taken"
             })
 
-        users.register_users(username=data['username'],
-                             email=data['email'],
-                             password=data['password'],
-                             firstname=data['first_name'],
-                             lastname=data['last_name'],
-                             othernames=data['othernames'],
-                             phonenumber=data['phone_number'],)
+        new = users.register_users(username=data['username'],
+                                   email=data['email'],
+                                   password=data['password'],
+                                   firstname=data['first_name'],
+                                   lastname=data['last_name'],
+                                   othernames=data['othernames'],
+                                   phonenumber=data['phone_number'])
         return jsonify({
             "status": 201,
+            "data": new,
             "message": "User has been succesfully created"
         })
 
@@ -78,14 +83,25 @@ class UserController:
         """endpoint for logging in  users"""
         data = request.get_json()
         login = Users()
+        username = data.get("username")
+        password = data.get("password")
+
 
         valid_user = login.check_login_user(
             data['username'], data['password'])
         if valid_user:
+            exp = datetime.timedelta(days = 1)
+            token = create_access_token(username, expires_delta= exp )
+
             return jsonify({
-                "status": 200,
-                "message": "You are logged in successfully"
+                "message": "successfully logged in",
+                "token": token
             })
+
+
+        return jsonify({
+            "status": 200,
+            "message": "Please enter valid username and password"})
 
     def get_all_users(self):
         pass

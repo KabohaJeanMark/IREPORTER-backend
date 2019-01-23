@@ -12,9 +12,11 @@ class Interventions:
         sql = """INSERT INTO interventions(\
                 location, status, images, videos,\
                 comment, created_at, user_id)\
-                VALUES('{}','{}','{}','{}','{}','{}','{}')"""\
+                VALUES('{}','{}','{}','{}','{}','{}','{}') RETURNING intervention_id"""\
               .format(location, status, images, videos, comment, created_at, created_by)
         self.conn.cur.execute(sql)
+        intervention = self.conn.cur.fetchone()
+        return intervention
 
     def get_all_intervention_records(self):
         """function that fetches all interventions"""

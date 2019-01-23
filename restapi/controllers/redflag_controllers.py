@@ -35,7 +35,7 @@ class InterventionsController():
                     "message": "{} field is missing".format(v)
                 })
 
-        interventions.add_intervention(location=data['location'],
+        interv_id = interventions.add_intervention(location=data['location'],
                                        status=data['status'],
                                        images=data['images'],
                                        videos=data['videos'],
@@ -46,7 +46,7 @@ class InterventionsController():
         return jsonify({
             "status": 201,
             "data": [{
-
+                "id": interv_id['intervention_id'],
                 "message": "Created intervention record"
             }]
         })

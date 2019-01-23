@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify
 from restapi.controllers.redflag_controllers import InterventionsController
-
+from flask_jwt_extended import jwt_required
 
 BPrint = Blueprint("redflag_views", __name__, url_prefix="/api/v1")
 
@@ -13,6 +13,7 @@ def index():
 
 
 @BPrint.route("/interventions", methods=["POST"])
+@jwt_required
 def add_intervention():
     return myIntervention.create_intervention(), 201
 
@@ -21,6 +22,7 @@ def add_intervention():
 def get_all_the_interventions():
     return myIntervention.get_all_interventions()
 
+@jwt_required
 @BPrint.route("user/interventions/<int:user_id>", methods=["GET"])
 def get_all_a_users_interventions(user_id):
     return myIntervention.get_all_a_users_interventions(user_id)
