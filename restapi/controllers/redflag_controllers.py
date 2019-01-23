@@ -84,8 +84,26 @@ class InterventionsController():
             })
         return jsonify({'error': 'Intervention record is not found'}), 400
 
-    def update_intervention_status(self, redflag_id):
-        pass
+    def admin_update_stat(self, intervention_id):
+        data = request.get_json()
+        status = data.get('status')
+        valid_statuses = ['under investigation', 'rejected', 'resolved']
+        if status not in valid_statuses:
+            return jsonify({
+                "status": 400,
+                "message": "The new status should be either 'under investigation','rejected' or 'resolved "
+            }), 400
+
+        update_int = Interventions().admin_update_intervention_status( data['status'], intervention_id)
+        if update_int:
+            return jsonify({
+                "status": 201,
+                "data": [{
+                    "id": update_int,
+                    "message": "Updated intervention's status"
+                }]
+            })
+        return jsonify({'error': 'Intervention record is not found'}), 400
 
     def update_intervention_location(self, redflag_id):
         pass
