@@ -15,7 +15,7 @@ def index():
 @BPrint.route("/interventions", methods=["POST"])
 @jwt_required
 def add_intervention():
-    return myIntervention.create_intervention(), 201
+    return myIntervention.create_intervention()
 
 
 @BPrint.route("/interventions", methods=["GET"])
@@ -36,14 +36,14 @@ def get_intervention(intervention_id):
 def delete_intervention(intervention_id):
     return myIntervention.delete_intervention(intervention_id)
 
-@BPrint.route("/redflags/<int:redflag_id>/location", methods=["PATCH"])
-def update_redflags_location(redflag_id):
-    pass
+@BPrint.route("/interventions/<int:intervention_id>/location", methods=["PATCH"])
+def update_interventions_location(intervention_id):
+    return myIntervention.update_intervention_location(intervention_id)
 
 
-@BPrint.route("/redflags/<int:redflag_id>/comment", methods=["PATCH"])
-def update_redflags_comment(redflag_id):
-    pass
+@BPrint.route("/interventions/<int:intervention_id>/comment", methods=["PATCH"])
+def update_interventions_comment(intervention_id):
+    return myIntervention.update_intervention_comment(intervention_id)
 
 
 @BPrint.route("/interventions/<int:intervention_id>/status", methods=["PATCH"])
