@@ -12,6 +12,7 @@ def add_user():
     return myUser.create_users(), 200
 
 
+
 @BP.route("/users", methods=["GET"])
 def get_users():
     return myUser.get_all_users(), 200

@@ -22,14 +22,6 @@ class UserController:
         email = data.get("email")
         password = data.get("password")
 
-        user_postman_inputs = [first_name, last_name,
-                               othernames, phone_number, user_name, email, password]
-        for value in user_postman_inputs:
-            if not value:
-                return jsonify({
-                    "status": "400",
-                    "message": "A field value is missing"
-                })
         if not data:
             return jsonify({
                 "status": "400",
@@ -61,7 +53,7 @@ class UserController:
         if user_exist:
             return jsonify({
                 "status": 400,
-                "message": "That username is already taken"
+                "message": "That username already exists"
             })
         email_taken = users.check_email_exists(email=data['email'])
         if email_taken:
