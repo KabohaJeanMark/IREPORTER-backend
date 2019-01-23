@@ -18,8 +18,12 @@ def add_intervention():
 
 
 @BPrint.route("/interventions", methods=["GET"])
-def get_all_user_interventions():
+def get_all_the_interventions():
     return myIntervention.get_all_interventions()
+
+@BPrint.route("user/interventions/<int:user_id>", methods=["GET"])
+def get_all_a_users_interventions(user_id):
+    return myIntervention.get_all_a_users_interventions(user_id)
 
 
 @BPrint.route("/redflags/<int:redflag_id>", methods=["GET"])
