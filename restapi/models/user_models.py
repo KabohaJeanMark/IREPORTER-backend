@@ -33,3 +33,10 @@ class Users:
         row = self.conn.cur.fetchone()
         return row
 
+    def check_login_user(self, username, password):
+        """login user"""
+        sql = "SELECT * FROM users WHERE username='{}'".format(username) + "and password='{}'".format(password)
+        self.conn.cur.execute(sql)
+        users = self.conn.cur.fetchone()
+        return users
+
