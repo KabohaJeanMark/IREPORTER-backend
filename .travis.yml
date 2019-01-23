@@ -3,6 +3,12 @@ language: python
 python:
 - "3.6.4" 
 
+services:
+- postgresql
+
+before_script:
+- "psql -c 'create database ireporter;' -U postgres"
+
 install:
 - pip install -r requirements.txt
 

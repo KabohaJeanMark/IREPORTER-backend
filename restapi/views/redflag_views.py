@@ -32,10 +32,9 @@ def get_all_a_users_interventions(user_id):
 def get_intervention(intervention_id):
     return myIntervention.get_a_single_intervention(intervention_id)  
 
-@BPrint.route("/redflags/<int:redflag_id>", methods=["DELETE"])
-def delete_redflag(redflag_id):
-    pass
-
+@BPrint.route("/interventions/<int:intervention_id>", methods=["DELETE"])
+def delete_intervention(intervention_id):
+    return myIntervention.delete_intervention(intervention_id)
 
 @BPrint.route("/redflags/<int:redflag_id>/location", methods=["PATCH"])
 def update_redflags_location(redflag_id):
