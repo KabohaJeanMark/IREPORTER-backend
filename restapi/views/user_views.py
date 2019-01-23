@@ -11,6 +11,9 @@ myUser = UserController()
 def add_user():
     return myUser.create_users(), 200
 
+@BP.route("/auth/login", methods=["POST"])
+def sign_in():
+    return myUser.login_user(), 200
 
 
 @BP.route("/users", methods=["GET"])
