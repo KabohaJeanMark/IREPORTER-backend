@@ -78,9 +78,22 @@ class UserController:
                              othernames=data['othernames'],
                              phonenumber=data['phone_number'],)
         return jsonify({
-            "data": 201,
+            "status": 201,
             "message": "User has been succesfully created"
         })
+
+    def login_user(self):
+        """endpoint for logging in  users"""
+        data = request.get_json()
+        login = Users()
+
+        valid_user = login.check_login_user(
+            data['username'], data['password'])
+        if valid_user:
+            return jsonify({
+                "status": 200,
+                "message": "You are logged in successfully"
+            })
 
     def get_all_users(self):
         pass
