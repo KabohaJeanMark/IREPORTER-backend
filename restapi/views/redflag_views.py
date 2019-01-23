@@ -27,11 +27,10 @@ def get_all_the_interventions():
 def get_all_a_users_interventions(user_id):
     return myIntervention.get_all_a_users_interventions(user_id)
 
-
-@BPrint.route("/redflags/<int:redflag_id>", methods=["GET"])
-def get_redflag(redflag_id):
-    pass
-
+@jwt_required
+@BPrint.route("/interventions/<int:intervention_id>", methods=["GET"])
+def get_intervention(intervention_id):
+    return myIntervention.get_a_single_intervention(intervention_id)  
 
 @BPrint.route("/redflags/<int:redflag_id>", methods=["DELETE"])
 def delete_redflag(redflag_id):

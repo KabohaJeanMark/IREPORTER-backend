@@ -63,10 +63,14 @@ class InterventionsController():
         if single_user_interv:
             return jsonify({'status': 200,
                             'data': single_user_interv})
-        return jsonify({'error': 'intervention not found'}), 404 
+        return jsonify({'error': 'Intervention not found'}), 404 
 
-    def get_a_single_intervention(self, redflag_id):
-        pass
+    def get_a_single_intervention(self, intervention_id):
+        one_intervention = Interventions().get_one_intervention(intervention_id)
+        if one_intervention:
+            return jsonify({'status': 200,
+                            'data': one_intervention})
+        return jsonify({'error': 'Intervention record is not found'}), 404 
 
     def delete_intervention(self, redflag_id):
         pass

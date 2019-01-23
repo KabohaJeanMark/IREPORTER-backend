@@ -30,8 +30,15 @@ class Interventions:
         sql = "SELECT * FROM interventions WHERE user_id='{}'".format(
             user_id)+"ORDER BY created_at DESC"
         self.conn.cur.execute(sql)
-        interventions = self.conn.cur.fetchall()
+        intervention = self.conn.cur.fetchall()
+        return intervention
+
+    def get_one_intervention(self, intervention_id):
+        """function that fetches one interventions"""
+        sql = "SELECT * FROM interventions WHERE intervention_id='{}'".format(
+            intervention_id)+"ORDER BY created_at DESC"
+        self.conn.cur.execute(sql)
+        interventions = self.conn.cur.fetchone()
         return interventions
 
-    def get_one_intervention(self):
-        pass
+    
