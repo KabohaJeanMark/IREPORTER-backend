@@ -13,13 +13,13 @@ def index():
 
 
 @BPrint.route("/interventions", methods=["POST"])
-def add_redflag():
+def add_intervention():
     return myIntervention.create_intervention(), 201
 
 
-@BPrint.route("/redflags", methods=["GET"])
-def get_redflags():
-    pass
+@BPrint.route("/interventions", methods=["GET"])
+def get_all_user_interventions():
+    return myIntervention.get_all_interventions()
 
 
 @BPrint.route("/redflags/<int:redflag_id>", methods=["GET"])

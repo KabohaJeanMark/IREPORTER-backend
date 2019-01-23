@@ -43,8 +43,7 @@ class DatabaseConnect:
             images VARCHAR(100) NOT NULL,
             videos VARCHAR(100) NOT NULL,
             comment VARCHAR(100) NOT NULL,
-            created_at VARCHAR(100) NOT NULL,
-            created_by INT NOT NULL,
+            created_at VARCHAR(100) NOT NULL )
             """
 
         self.cur.execute(user_table)
@@ -56,3 +55,4 @@ class DatabaseConnect:
         query = "TRUNCATE TABLE users, interventions RESTART IDENTITY "
         self.cur.execute(query)
         return print('tables dropped successfully')
+
