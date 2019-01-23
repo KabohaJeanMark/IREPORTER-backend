@@ -16,8 +16,6 @@ class Users:
               .format(username, email, password, firstname,
                       lastname, othernames, phonenumber, created_at)
         self.conn.cur.execute(sql)
-        returned_record = self.conn.cur.fetchone()
-        return returned_record 
 
     def check_email_exists(self, email):
         """function that checks and validates unique email in db"""
