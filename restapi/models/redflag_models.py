@@ -49,3 +49,9 @@ class Interventions:
         self.conn.cur.execute(delete_query)
         return deleted_interv
 
+    def admin_update_intervention_status(self, status, intervention_id):
+        """function that enables the admin to update the intervention status"""
+        sql = "UPDATE interventions SET status='{}'".format(status) + " WHERE intervention_id='{}'".format(intervention_id)
+        self.conn.cur.execute(sql)
+        stat_id = intervention_id
+        return stat_id

@@ -46,6 +46,6 @@ def update_redflags_comment(redflag_id):
     pass
 
 
-@BPrint.route("/redflags/<int:redflag_id>/status", methods=["PATCH"])
-def update_redflags_status(redflag_id):
-    pass
+@BPrint.route("/interventions/<int:intervention_id>/status", methods=["PATCH"])
+def update_intervention_status(intervention_id):
+    return myIntervention.admin_update_stat(intervention_id)
