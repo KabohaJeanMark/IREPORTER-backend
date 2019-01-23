@@ -41,4 +41,11 @@ class Interventions:
         interventions = self.conn.cur.fetchone()
         return interventions
 
-    
+    def delete_one_intervention(self, intervention_id):
+        """ function that deletes an intervention record"""
+        delete_query = "DELETE FROM interventions WHERE intervention_id = '{}'".format(
+            intervention_id)
+        deleted_interv = intervention_id
+        self.conn.cur.execute(delete_query)
+        return deleted_interv
+
