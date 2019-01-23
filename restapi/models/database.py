@@ -43,7 +43,10 @@ class DatabaseConnect:
             images VARCHAR(100) NOT NULL,
             videos VARCHAR(100) NOT NULL,
             comment VARCHAR(100) NOT NULL,
-            created_at VARCHAR(100) NOT NULL )
+            created_at VARCHAR(100) NOT NULL,
+            user_id INT NOT NULL,
+            FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE ON UPDATE CASCADE 
+            )
             """
 
         self.cur.execute(user_table)

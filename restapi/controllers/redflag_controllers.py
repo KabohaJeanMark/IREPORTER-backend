@@ -17,6 +17,7 @@ class InterventionsController():
         videos = data.get("videos")
         comment = data.get("comment")
         location = data.get("location")
+        created_by = request.headers['user_id']
 
         postman_strings = [status, images, videos, comment, location]
         postman_data = [status, images, videos, comment, location]
@@ -34,31 +35,42 @@ class InterventionsController():
                     "message": "{} field is missing".format(v)
                 })
 
-        interventions.add_intervention(location=data['location'],
-                                                              status=data['status'],
-                                                              images=data['images'],
-                                                              videos=data['videos'],
-                                                              comment=data['comment']
+        interv_id = interventions.add_intervention(location=data['location'],
+                                       status=data['status'],
+                                       images=data['images'],
+                                       videos=data['videos'],
+                                       comment=data['comment'],
+                                       created_by=request.headers['user_id']
+                                       )
 
-                                                              )
-        
         return jsonify({
-                "status": 201,
-                "data": [{
-                   
-                    "message": "Created intervention record"
-                }]
-            })
+            "status": 201,
+            "data": [{
+                "id": interv_id['intervention_id'],
+                "message": "Created intervention record"
+            }]
+        })
 
     def get_all_interventions(self):
-        intervention = Interventions().get_users_interventions()
+        intervention = Interventions().get_all_intervention_records()
         if intervention:
             return jsonify({'status': 200,
                             'data': intervention})
         return jsonify({'error': 'intervention not found'}), 404
 
-    def get_a_single_intervention(self, redflag_id):
-        pass
+    def get_all_a_users_interventions(self, user_id):
+        single_user_interv = Interventions().get_all_interventions_by_specific_user(user_id)
+        if single_user_interv:
+            return jsonify({'status': 200,
+                            'data': single_user_interv})
+        return jsonify({'error': 'Intervention not found'}), 404 
+
+    def get_a_single_intervention(self, intervention_id):
+        one_intervention = Interventions().get_one_intervention(intervention_id)
+        if one_intervention:
+            return jsonify({'status': 200,
+                            'data': one_intervention})
+        return jsonify({'error': 'Intervention record is not found'}), 404 
 
     def delete_intervention(self, redflag_id):
         pass

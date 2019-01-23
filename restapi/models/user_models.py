@@ -12,10 +12,12 @@ class Users:
         sql = "INSERT INTO users(\
                 username, email, password, firstname,\
                 lastname, othername, phonenumber, created_at)"\
-              " VALUES('{}','{}','{}','{}','{}','{}','{}','{}')"\
+              " VALUES('{}','{}','{}','{}','{}','{}','{}','{}') RETURNING username "\
               .format(username, email, password, firstname,
                       lastname, othernames, phonenumber, created_at)
         self.conn.cur.execute(sql)
+        user = self.conn.cur.fetchone()
+        return user
 
     def check_email_exists(self, email):
         """function that checks and validates unique email in db"""
