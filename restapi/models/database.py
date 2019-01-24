@@ -6,13 +6,24 @@ class DatabaseConnect:
     """class that establishes database connection, creates various tables and drops the tables """
 
     def __init__(self):
+
+        if os.getenv('DB_NAME') == "testdb":
+            self.dbname = "test"
+            self.user = "postgres"
+            self.password = ""
+            self.host = "127.0.0.1"
+        else:
+            self.dbname = "ddo76jqcvdgpp6"
+            self.user = "iahxwhjlgkymau"
+            self.password = "86ca7ea32a682d6e997410bd6ce1093093a51f2b3ba4ba9c9bb5a2efb0598e41"
+            self.host = "ec2-54-221-253-228.compute-1.amazonaws.com"
         try:
             self.connection = psycopg2.connect(
-                dbname=os.getenv('DB_DATABASE'),
-                user=os.getenv('DB_USER'),
-                host= os.getenv('DB_HOST'),
-                password='', 
-                port=os.getenv('DB_PORT')
+                dbname=self.dbname,
+                user=self.user,
+                host= self.host,
+                password=self.password, 
+                port=5432
             )
             self.connection.autocommit = True
             self.cur = self.connection.cursor(

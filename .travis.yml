@@ -8,14 +8,14 @@ services:
 
 env:
   global:
-    - DB_NAME='test_ireporter'
+    - DB_NAME='testdb'
 
 install:
   - pip install -r requirements.txt
   - pip install pytest-cov
 
 before_script:
-  - "psql -c 'create database test_ireporterdb;' -U postgres"
+  - "psql -c 'create database testdb;' -U postgres"
 
 script:
   - pytest --cov
