@@ -8,15 +8,20 @@ class DatabaseConnect:
     def __init__(self):
 
         if os.getenv('DB_NAME') == "testdb":
-            self.dbname = "test"
+            self.dbname = "testdb"
             self.user = "postgres"
             self.password = ""
             self.host = "127.0.0.1"
-        else:
+        elif os.getenv('DB_NAME') == "proddb":
             self.dbname = "ddo76jqcvdgpp6"
             self.user = "iahxwhjlgkymau"
             self.password = "86ca7ea32a682d6e997410bd6ce1093093a51f2b3ba4ba9c9bb5a2efb0598e41"
             self.host = "ec2-54-221-253-228.compute-1.amazonaws.com"
+        else:
+            self.dbname = "ireporter"
+            self.user = "postgres"
+            self.password = ""
+            self.host = "127.0.0.1"
         try:
             self.connection = psycopg2.connect(
                 dbname=self.dbname,
@@ -85,8 +90,8 @@ class DatabaseConnect:
     def drop_tables(self):
         """function that drops the tables"""
         
-        self.cur.execute("delete from redflags")
-        self.cur.execute("delete from interventions")
-        self.cur.execute("delete from users")
+        self.cur.execute("drop table redflags")
+        self.cur.execute("drop table interventions")
+        self.cur.execute("drop table users")
         return print('tables dropped successfully')
 
