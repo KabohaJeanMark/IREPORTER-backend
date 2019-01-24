@@ -90,8 +90,8 @@ class DatabaseConnect:
     def drop_tables(self):
         """function that drops the tables"""
         
-        self.cur.execute("delete from redflags")
-        self.cur.execute("delete from interventions")
-        self.cur.execute("delete from users")
+        self.cur.execute("drop table redflags")
+        self.cur.execute("drop table interventions")
+        self.cur.execute("drop table users")
         return print('tables dropped successfully')
 
