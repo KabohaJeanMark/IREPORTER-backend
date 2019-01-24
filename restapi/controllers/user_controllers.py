@@ -100,8 +100,8 @@ class UserController:
 
 
         return jsonify({
-            "status": 200,
-            "message": "Please enter valid username and password"})
+            "status": 400,
+            "message": "Please enter valid username and password"}) , 400
 
     def get_all_users(self):
         pass
