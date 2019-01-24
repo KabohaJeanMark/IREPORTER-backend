@@ -97,5 +97,13 @@ class TestEndpoints(TestDb):
         self.assertEqual(resp['message'],"That username already exists")
         self.assertEqual(resp['status'], 400 )
 
-    
-        
+
+    def test_post_intervention(self):
+        intervention_data = {
+            "comment": "Power outage in Mulago",
+            "images": "elec.jpeg",
+            "location": "Mulago",
+            "videos": "blackout.mp4"
+        }
+        res = self.app.post(
+            '/api/v1/interventions', content_type='application/json', data=json.dumps(intervention_data))
