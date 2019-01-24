@@ -1,51 +1,45 @@
 from flask import Blueprint, jsonify
-from restapi.controllers.redflag_controllers import InterventionsController
+from restapi.controllers.redflag_controllers import RedflagController
 from flask_jwt_extended import jwt_required
 
-BPrint = Blueprint("redflag_views", __name__, url_prefix="/api/v1")
+bp = Blueprint("redflag_views", __name__, url_prefix="/api/v1")
 
-myIntervention = InterventionsController()
-
-
-@BPrint.route("/")
-def index():
-    return jsonify({"Message": "Welcome to Ireporter"})
+myRedflag = RedflagController()
 
 
-@BPrint.route("/interventions", methods=["POST"])
+@bp.route("/redflags", methods=["POST"])
 @jwt_required
-def add_intervention():
-    return myIntervention.create_intervention()
+def add_redflag():
+    return myRedflag.create_redflag()
 
-
-@BPrint.route("/interventions", methods=["GET"])
-def get_all_the_interventions():
-    return myIntervention.get_all_interventions()
 
 @jwt_required
-@BPrint.route("user/interventions/<int:user_id>", methods=["GET"])
-def get_all_a_users_interventions(user_id):
-    return myIntervention.get_all_a_users_interventions(user_id)
+@bp.route("/redflags", methods=["GET"])
+def get_all_the_redflags():
+    return myRedflag.get_all_redflags()
+
 
 @jwt_required
-@BPrint.route("/interventions/<int:intervention_id>", methods=["GET"])
-def get_intervention(intervention_id):
-    return myIntervention.get_a_single_intervention(intervention_id)  
-
-@BPrint.route("/interventions/<int:intervention_id>", methods=["DELETE"])
-def delete_intervention(intervention_id):
-    return myIntervention.delete_intervention(intervention_id)
-
-@BPrint.route("/interventions/<int:intervention_id>/location", methods=["PATCH"])
-def update_interventions_location(intervention_id):
-    return myIntervention.update_intervention_location(intervention_id)
+@bp.route("/redflags/<int:redflag_id>", methods=["GET"])
+def get_redflag(redflag_id):
+    return myRedflag.get_a_single_redflag(redflag_id)
 
 
-@BPrint.route("/interventions/<int:intervention_id>/comment", methods=["PATCH"])
-def update_interventions_comment(intervention_id):
-    return myIntervention.update_intervention_comment(intervention_id)
+@bp.route("/redflags/<int:redflag_id>", methods=["DELETE"])
+def delete_redflag(redflag_id):
+    return myRedflag.delete_redflag(redflag_id)
 
 
-@BPrint.route("/interventions/<int:intervention_id>/status", methods=["PATCH"])
-def update_intervention_status(intervention_id):
-    return myIntervention.admin_update_stat(intervention_id)
+@bp.route("/redflags/<int:redflag_id>/location", methods=["PATCH"])
+def update_redflag_location(redflag_id):
+    return myRedflag.update_redflag_location(redflag_id)
+
+
+@bp.route("/redflags/<int:redflag_id>/comment", methods=["PATCH"])
+def update_redflags_comment(redflag_id):
+    return myRedflag.update_redflag_comment(redflag_id)
+
+
+@bp.route("/redflags/<int:redflag_id>/status", methods=["PATCH"])
+def update_redflag_status(redflag_id):
+    return myRedflag.admin_update_stat(redflag_id)

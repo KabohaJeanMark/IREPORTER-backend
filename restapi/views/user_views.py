@@ -9,19 +9,19 @@ myUser = UserController()
 
 @BP.route("/auth/signup", methods=["POST"])
 def add_user():
-    return myUser.create_users(), 201
+    return myUser.create_users()
 
 
 @BP.route("/auth/login", methods=["POST"])
 def sign_in():
-    return myUser.login_user(), 200
+    return myUser.login_user()
 
 
 @BP.route("/users", methods=["GET"])
 def get_users():
-    return myUser.get_all_users(), 200
+    return myUser.get_all_users()
 
 
 @BP.route("/users/<int:user_id>", methods=["GET"])
 def get_one_user_by_id(user_id):
-    return myUser.get_a_single_user(user_id), 200
+    return myUser.get_a_single_user(user_id)
