@@ -1,0 +1,4 @@
+export "DB_NAME"="proddb"
+export "DB_USER"="iahxwhjlgkymau"
+export "DB_HOST"="ec2-54-221-253-228.compute-1.amazonaws.com"
+export "DB_PORT"="5432"

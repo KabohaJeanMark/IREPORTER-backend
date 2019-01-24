@@ -12,11 +12,16 @@ class DatabaseConnect:
             self.user = "postgres"
             self.password = ""
             self.host = "127.0.0.1"
-        else:
+        elif os.getenv('DB_NAME') == "proddb":
             self.dbname = "ddo76jqcvdgpp6"
             self.user = "iahxwhjlgkymau"
             self.password = "86ca7ea32a682d6e997410bd6ce1093093a51f2b3ba4ba9c9bb5a2efb0598e41"
             self.host = "ec2-54-221-253-228.compute-1.amazonaws.com"
+        else:
+            self.dbname = "ireporter"
+            self.user = "postgres"
+            self.password = ""
+            self.host = "127.0.0.1"
         try:
             self.connection = psycopg2.connect(
                 dbname=self.dbname,
