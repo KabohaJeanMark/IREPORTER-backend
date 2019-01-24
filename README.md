@@ -1,5 +1,5 @@
-
-
+###iREPORTER
+[![Build Status](https://travis-ci.com/KabohaJeanMark/IREPORTER-CHALLENGE-3.svg?branch=develop)](https://travis-ci.com/KabohaJeanMark/IREPORTER-CHALLENGE-3)
 
 ## About
 iReporter gives all citizens a platfrom to raise concerns about corruption and corruption red-flag cases and the need for government intervention in situations.
