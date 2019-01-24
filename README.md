@@ -1,4 +1,5 @@
-###iREPORTER
+#iREPORTER
+
 [![Build Status](https://travis-ci.com/KabohaJeanMark/IREPORTER-CHALLENGE-3.svg?branch=develop)](https://travis-ci.com/KabohaJeanMark/IREPORTER-CHALLENGE-3)
 
 [![Coverage Status](https://coveralls.io/repos/github/KabohaJeanMark/IREPORTER-CHALLENGE-3/badge.svg)](https://coveralls.io/github/KabohaJeanMark/IREPORTER-CHALLENGE-3)
