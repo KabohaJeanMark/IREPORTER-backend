@@ -48,6 +48,6 @@ def update_interventions_comment(intervention_id):
 
 
 @BPrint.route("/interventions/<int:intervention_id>/status", methods=["PATCH"])
-@admin_only
+
 def update_intervention_status(intervention_id):
     return myIntervention.admin_update_stat(intervention_id)

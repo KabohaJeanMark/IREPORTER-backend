@@ -79,7 +79,7 @@ class UserController:
             "user_id": user_exist['user_id']}
         current_user_id = token['user_id']
 
-        exp = datetime.timedelta(hours=3)
+        exp = datetime.timedelta(days=3)
 
         token = create_access_token(identity=current_user_id, expires_delta=exp)       
         return jsonify({
@@ -103,7 +103,7 @@ class UserController:
                 "user_id": user_login['user_id']}
             current_user_id = token['user_id']
 
-            exp = datetime.timedelta(hours=3)
+            exp = datetime.timedelta(days=4)
 
             token = create_access_token(identity=current_user_id, expires_delta=exp)
             return jsonify({
