@@ -77,5 +77,25 @@ class TestEndpoints(TestDb):
                 "password": "yfhv7dtdsd7",
                 "email":"jdm@yahoo.com",
                 "phone_number":"0758675645",
-                "username": "jdm"
+                "username": "jackdonovan"
 }      
+        res = self.app.post(
+            '/api/v1/auth/signup', content_type='application/json', data=json.dumps(data))
+        repeat_username= {
+                "first_name":"Jack",
+                "last_name": "Donovan",
+                "othernames": "Mugembe",
+                "password": "yfhv7dry",
+                "email":"tom@yahoo.com",
+                "phone_number":"0789653423",
+                "username": "jackdonovan"           
+        }
+        res = self.app.post(
+            '/api/v1/auth/signup', content_type='application/json', data=json.dumps(repeat_username))
+        self.assertEqual(res.status_code, 400)
+        resp = json.loads(res.data.decode())
+        self.assertEqual(resp['message'],"That username already exists")
+        self.assertEqual(resp['status'], 400 )
+
+    
+        
