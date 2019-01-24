@@ -1,14 +1,14 @@
 language: python
 
 python:
-- "3.6.4" 
+- "3.6" 
 
 services:
 - postgresql
 
 env:
   global:
-    -APP_SETTINGS = 'testing'
+    - DB_NAME='test_ireporter'
 
 install:
 - pip install -r requirements.txt
