@@ -8,7 +8,7 @@ class DatabaseConnect:
     def __init__(self):
 
         if os.getenv('DB_NAME') == "testdb":
-            self.dbname = "test"
+            self.dbname = "testdb"
             self.user = "postgres"
             self.password = ""
             self.host = "127.0.0.1"
