@@ -1,26 +1,26 @@
 language: python
 
 python:
-- "3.6" 
+  - "3.6" 
 
 services:
-- postgresql
+  - postgresql
 
 env:
   global:
     - DB_NAME='test_ireporter'
 
 install:
-- pip install -r requirements.txt
-- pip install pytest-cov
+  - pip install -r requirements.txt
+  - pip install pytest-cov
 
 before_script:
-- "psql -c 'create database test_ireporterdb;' -U postgres"
+  - "psql -c 'create database test_ireporterdb;' -U postgres"
 
 script:
-- pytest --cov=.
-- coverage report
+  - pytest --cov=.
+  - coverage report
 
 after_success:
-- coveralls
+  - coveralls
 
