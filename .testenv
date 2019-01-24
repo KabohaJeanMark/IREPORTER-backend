@@ -1,5 +1,5 @@
 
-export "DB_NAME"="test_ireporterdb"
+export "DB_NAME"="testdb"
 export "DB_USER"="postgres"
 export "DB_HOST"="localhost"
 export "DB_PORT"="5432"
