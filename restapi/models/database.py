@@ -48,9 +48,23 @@ class DatabaseConnect:
             FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE ON UPDATE CASCADE 
             )
             """
+        redflag_table = """
+            CREATE TABLE IF NOT EXISTS redflags(
+            redflag_id serial PRIMARY KEY NOT NULL,
+            location VARCHAR(100) NOT NULL,
+            status VARCHAR(100) DEFAULT'draft',
+            images VARCHAR(100) NOT NULL,
+            videos VARCHAR(100) NOT NULL,
+            comment VARCHAR(100) NOT NULL,
+            created_at VARCHAR(100) NOT NULL,
+            user_id INT NOT NULL,
+            FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE ON UPDATE CASCADE 
+            )
+            """
 
         self.cur.execute(user_table)
         self.cur.execute(intervention_table)
+        self.cur.execute(redflag_table)
         print("tables created successfully")
 
     def drop_tables(self):

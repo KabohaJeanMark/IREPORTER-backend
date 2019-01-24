@@ -1,6 +1,6 @@
 from datetime import datetime
 from restapi.models.database import DatabaseConnect
-
+from flask import jsonify
 
 class Users:
     def __init__(self):
@@ -41,5 +41,4 @@ class Users:
         self.conn.cur.execute(sql)
         users = self.conn.cur.fetchone()
         return users
-
 
