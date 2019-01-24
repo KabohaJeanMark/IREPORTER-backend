@@ -73,17 +73,26 @@ class UserController:
                                    lastname=data['last_name'],
                                    othernames=data['othernames'],
                                    phonenumber=data['phone_number'])
+
+        user_exist = users.check_username_exists(username=data['username'])
+        token = {
+            "user_id": user_exist['user_id']}
+        current_user_id = token['user_id']
+
+        exp = datetime.timedelta(days=3)
+
+        token = create_access_token(identity=current_user_id, expires_delta=exp)       
         return jsonify({
             "status": 201,
-            "data": new,
-            "message": "User has been succesfully created"
-        }), 400
+            "data": [{
+                "token": token,
+                "message": "User has been succesfully created"
+            }]
+        }), 201
 
     def login_user(self):
         """endpoint for logging in  users"""
         data = request.get_json()
-        username = data.get("username")
-        password = data.get("password")
 
         user = Users()
 
@@ -91,12 +100,12 @@ class UserController:
 
         if user_login:
             token = {
-                "user_id": user_login['user_id'],
-                "email": user_login['email']
-            }
-            exp = datetime.timedelta(hours=3)
+                "user_id": user_login['user_id']}
+            current_user_id = token['user_id']
 
-            token = create_access_token(identity=token, expires_delta=exp)
+            exp = datetime.timedelta(days=4)
+
+            token = create_access_token(identity=current_user_id, expires_delta=exp)
             return jsonify({
                 "message": "successfully logged in",
                 "token": token

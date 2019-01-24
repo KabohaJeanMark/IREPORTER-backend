@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify
 from restapi.controllers.intervention_controllers import InterventionsController
 from flask_jwt_extended import jwt_required
+from restapi.utilities.auth import admin_only
 
 BPrint = Blueprint("intervention_views", __name__, url_prefix="/api/v1")
 
@@ -47,5 +48,6 @@ def update_interventions_comment(intervention_id):
 
 
 @BPrint.route("/interventions/<int:intervention_id>/status", methods=["PATCH"])
+
 def update_intervention_status(intervention_id):
     return myIntervention.admin_update_stat(intervention_id)

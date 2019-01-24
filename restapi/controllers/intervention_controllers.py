@@ -1,6 +1,7 @@
 from flask import request, jsonify
 from datetime import datetime
 from restapi.models.intervention_models import Interventions
+from flask_jwt_extended import get_jwt_identity
 
 
 class InterventionsController():
@@ -16,7 +17,7 @@ class InterventionsController():
         videos = data.get("videos")
         comment = data.get("comment")
         location = data.get("location")
-        created_by = request.headers['user_id']
+        created_by = get_jwt_identity()
 
         postman_strings = [images, videos, comment, location]
         postman_data = [images, videos, comment, location]
@@ -38,7 +39,7 @@ class InterventionsController():
                                                    images=data['images'],
                                                    videos=data['videos'],
                                                    comment=data['comment'],
-                                                   created_by=request.headers['user_id']
+                                                   created_by= get_jwt_identity()
                                                    )
 
         return jsonify({

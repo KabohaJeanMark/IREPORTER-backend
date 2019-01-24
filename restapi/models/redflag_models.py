@@ -7,7 +7,6 @@ class Redflags:
         self.conn = DatabaseConnect()
 
     def add_redflag(self, location, images, videos, comment, created_by):
-        status = 'draft'
         created_at = datetime.now()
         sql = """INSERT INTO redflags(\
                 location, images, videos,\

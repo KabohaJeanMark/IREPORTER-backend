@@ -7,7 +7,6 @@ class Interventions:
         self.conn = DatabaseConnect()
 
     def add_intervention(self, location, images, videos, comment, created_by):
-        status = 'draft'
         created_at = datetime.now()
         sql = """INSERT INTO interventions(\
                 location, images, videos,\
