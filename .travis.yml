@@ -18,7 +18,7 @@ before_script:
 - "psql -c 'create database test_ireporterdb;' -U postgres"
 
 script:
-- python -m pytest restapi/tests --cov
+- pytest --cov=.
 - coverage report
 
 after_success:
