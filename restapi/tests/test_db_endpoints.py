@@ -24,7 +24,9 @@ class TestEndpoints(TestDb):
 }
         res = self.app.post(
             '/api/v1/auth/signup', content_type='application/json', data=json.dumps(data))
-        
+        response = json.loads(res.data.decode())
+        d = response['data']
+        self.assertEqual(d[0]['message'],"User has been succesfully created" )
         self.assertEqual(res.status_code,201)
 
     def test_valid_sign_in(self):
@@ -66,3 +68,14 @@ class TestEndpoints(TestDb):
         res = self.app.post(
             '/api/v1/auth/login', content_type='application/json', data=json.dumps(invalid_signin))
         self.assertEqual(res.status_code,400) 
+
+    def test_signup_with_same_username(self):
+        data ={
+                "first_name":"Jack",
+                "last_name": "Donovan",
+                "othernames": "Mugembe",
+                "password": "yfhv7dtdsd7",
+                "email":"jdm@yahoo.com",
+                "phone_number":"0758675645",
+                "username": "jdm"
+}      

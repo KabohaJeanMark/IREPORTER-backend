@@ -5,4 +5,6 @@ omit =
     */.pyc
     */venv/*
     */tests/*
+    */__init__.py
+
     

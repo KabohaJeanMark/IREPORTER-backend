@@ -1,0 +1,4 @@
+export DB_NAME=ireporter
+export DB_USER=postgres
+export DB_HOST=localhost
+export DB_PORT=5432

@@ -1,6 +1,6 @@
 import psycopg2
 from psycopg2 import extras
-
+import os
 
 class DatabaseConnect:
     """class that establishes database connection, creates various tables and drops the tables """
@@ -8,13 +8,17 @@ class DatabaseConnect:
     def __init__(self):
         try:
             self.connection = psycopg2.connect(
-                dbname='ireporter', user='postgres', host='localhost', password='', port=5432
+                dbname=os.getenv('DB_DATABASE'),
+                user=os.getenv('DB_USER'),
+                host= os.getenv('DB_HOST'),
+                password='', 
+                port=os.getenv('DB_PORT')
             )
             self.connection.autocommit = True
             self.cur = self.connection.cursor(
                 cursor_factory=psycopg2.extras.RealDictCursor)
 
-            print('Connected to the database successfully.')
+            print('Connected to the database successfully')
             self.create_tables()
 
         except(Exception, psycopg2.DatabaseError) as error:
@@ -69,7 +73,9 @@ class DatabaseConnect:
 
     def drop_tables(self):
         """function that drops the tables"""
-        query = "TRUNCATE TABLE users, interventions RESTART IDENTITY "
-        self.cur.execute(query)
+        
+        self.cur.execute("delete from redflags")
+        self.cur.execute("delete from interventions")
+        self.cur.execute("delete from users")
         return print('tables dropped successfully')
 
