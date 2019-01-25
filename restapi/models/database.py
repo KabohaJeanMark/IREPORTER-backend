@@ -64,6 +64,7 @@ class DatabaseConnect:
             videos VARCHAR(100) NOT NULL,
             comment VARCHAR(100) NOT NULL,
             created_at VARCHAR(100) NOT NULL,
+            type VARCHAR (20) DEFAULT'intervention',
             user_id INT NOT NULL,
             FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE ON UPDATE CASCADE 
             )
@@ -77,6 +78,7 @@ class DatabaseConnect:
             videos VARCHAR(100) NOT NULL,
             comment VARCHAR(100) NOT NULL,
             created_at VARCHAR(100) NOT NULL,
+            type VARCHAR (20) DEFAULT'redflag',
             user_id INT NOT NULL,
             FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE ON UPDATE CASCADE 
             )
