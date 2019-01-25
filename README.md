@@ -25,8 +25,8 @@ Clone this project to your computer on yourFolder by typing these commands in th
 ```
 $ mkdir yourFolder
 $ cd yourFolder
-$ git clone https://github.com/KabohaJeanMark/IREPORTER2
-$ cd IREPORTER2
+$ git clone https://github.com/KabohaJeanMark/IREPORTER-CHALLENGE-3
+$ cd IREPORTER-CHALLENGE-3
 $ virtualenv venv
 $ source venv/Scripts/activate
 $ pip install -r requirements.txt
