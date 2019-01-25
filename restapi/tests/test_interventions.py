@@ -135,13 +135,13 @@ class TestIntervention(TestDb):
             headers={'Authorization': f'Bearer {token}'}, data=json.dumps(intervention_data))
         self.assertEqual(res.status_code, 201)
         comment_data = {
-            "comment": ""
+            "comment": "The power has been down for hours"
         }
         resp = self.app.patch(
             '/api/v1/interventions/1/comment', content_type='application/json',
             headers={'Authorization': f'Bearer {token}'}, data=json.dumps(comment_data))
         self.assertEqual(resp.status_code, 201)
-        
+
 
 
 
