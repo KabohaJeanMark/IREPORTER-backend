@@ -88,6 +88,47 @@ class TestRedflags(TestDb):
 
         self.assertEqual(response.status_code, 200)
 
+    def test_update_redflag_location(self):
+        token = self.create_token()
+        redflag_data = {
+            "comment": "Misappropiate allocation of funds",
+            "images": "bribe1.jpeg",
+            "location": "Mbarara ",
+            "videos": "bribe2.mp4"
+        }
+        res = self.app.post(
+            '/api/v1/redflags', content_type='application/json',
+            headers={'Authorization': f'Bearer {token}'}, data=json.dumps(redflag_data))
+        self.assertEqual(res.status_code, 201)
+        location_data = {
+            "location": "Bushenyi"
+        }
+        resp = self.app.patch(
+            '/api/v1/redflags/1/location', content_type='application/json',
+            headers={'Authorization': f'Bearer {token}'}, data=json.dumps(location_data))
+        self.assertEqual(resp.status_code, 201)
+
+    def test_update_redflag_comment(self):
+        token = self.create_token()
+        redflag_data = {
+            "comment": "Misappropiate allocation of funds",
+            "images": "bribe1.jpeg",
+            "location": "Mbarara ",
+            "videos": "bribe2.mp4"
+        }
+        res = self.app.post(
+            '/api/v1/redflags', content_type='application/json',
+            headers={'Authorization': f'Bearer {token}'}, data=json.dumps(redflag_data))
+        self.assertEqual(res.status_code, 201)
+        comment_data = {
+            "comment": "Misuse of funds in NGO project"
+        }
+        resp = self.app.patch(
+            '/api/v1/redflags/1/comment', content_type='application/json',
+            headers={'Authorization': f'Bearer {token}'}, data=json.dumps(comment_data))
+        self.assertEqual(resp.status_code, 201)
+
+
 
 
 
