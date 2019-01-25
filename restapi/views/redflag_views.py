@@ -24,22 +24,22 @@ def get_all_the_redflags():
 def get_redflag(redflag_id):
     return myRedflag.get_a_single_redflag(redflag_id)
 
-
+@jwt_required
 @bp.route("/redflags/<int:redflag_id>", methods=["DELETE"])
 def delete_redflag(redflag_id):
     return myRedflag.delete_redflag(redflag_id)
 
-
+@jwt_required
 @bp.route("/redflags/<int:redflag_id>/location", methods=["PATCH"])
 def update_redflag_location(redflag_id):
     return myRedflag.update_redflag_location(redflag_id)
 
-
+@jwt_required
 @bp.route("/redflags/<int:redflag_id>/comment", methods=["PATCH"])
 def update_redflags_comment(redflag_id):
     return myRedflag.update_redflag_comment(redflag_id)
 
-
+@jwt_required
 @bp.route("/redflags/<int:redflag_id>/status", methods=["PATCH"])
 def update_redflag_status(redflag_id):
     return myRedflag.admin_update_stat(redflag_id)

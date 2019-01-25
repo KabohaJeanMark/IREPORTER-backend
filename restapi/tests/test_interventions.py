@@ -142,10 +142,22 @@ class TestIntervention(TestDb):
             headers={'Authorization': f'Bearer {token}'}, data=json.dumps(comment_data))
         self.assertEqual(resp.status_code, 201)
 
-
-
-
-
-
-
-
+    def test_update_intervention_status(self):
+        token = self.create_token()
+        redflag_data = {
+            "comment": "Misappropiate allocation of funds",
+            "images": "bribe1.jpeg",
+            "location": "Mbarara ",
+            "videos": "bribe2.mp4"
+        }
+        res = self.app.post(
+            '/api/v1/redflags', content_type='application/json',
+            headers={'Authorization': f'Bearer {token}'}, data=json.dumps(redflag_data))
+        self.assertEqual(res.status_code, 201)
+        status_data = {
+            "status": "resolved"
+        }
+        resp = self.app.patch(
+            '/api/v1/interventions/1/status', content_type='application/json',
+            headers={'Authorization': f'Bearer {token}'}, data=json.dumps(status_data))
+        self.assertEqual(resp.status_code, 201)

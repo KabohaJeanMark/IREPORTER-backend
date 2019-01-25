@@ -44,11 +44,7 @@ class UserController:
                 "status": "400",
                 "message": "The phone number should be a string of atleast 10 digits"
             }), 400
-        if not check_format_of_phone_number(data['phone_number']):
-            return jsonify({
-                "status": "400",
-                "message": "The phone number should be a string of only digits from 0 to 9"
-            }), 400
+            
         if not check_proper_email_format(data['email']):
             return jsonify({
                 "status": "400",

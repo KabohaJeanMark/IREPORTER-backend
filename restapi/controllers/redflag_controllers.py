@@ -94,7 +94,7 @@ class RedflagController():
                     "id": update_int,
                     "message": "Updated red_flag's status"
                 }]
-            })
+            }), 201
         return jsonify({'error': 'Redflag record is not found'}), 400
 
     def update_redflag_location(self, redflag_id):
