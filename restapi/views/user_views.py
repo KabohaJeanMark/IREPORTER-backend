@@ -16,12 +16,6 @@ def add_user():
 def sign_in():
     return myUser.login_user()
 
-
-@BP.route("/users", methods=["GET"])
-def get_users():
-    return myUser.get_all_users()
-
-
-@BP.route("/users/<int:user_id>", methods=["GET"])
-def get_one_user_by_id(user_id):
-    return myUser.get_a_single_user(user_id)
+@BP.route("/auth/admin", methods = ["POST"])
+def admin_sign_up():
+    return myUser.admin_login()

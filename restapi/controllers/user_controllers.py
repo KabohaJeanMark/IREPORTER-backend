@@ -3,8 +3,7 @@ import datetime
 from flask import request, jsonify
 from flask_jwt_extended import create_access_token
 from restapi.models.user_models import Users
-from restapi.utilities.validations import check_length_of_phone_number,\
-    check_format_of_phone_number, check_unfilled_fields,\
+from restapi.utilities.validations import  check_format_of_phone_number, check_unfilled_fields,\
     check_length_of_fields, check_proper_email_format, check_special_characters
 
 
@@ -17,15 +16,6 @@ class UserController:
         users = Users()
 
         data = request.get_json()
-
-        first_name = data.get("first_name")
-        last_name = data.get("last_name")
-        othernames = data.get("othernames")
-        phone_number = str(data.get("phone_number"))
-        user_name = data.get("username")
-        str(user_name).replace(" ", "")
-        email = data.get("email")
-        password = data.get("password")
 
         if not data:
             return jsonify({
@@ -49,17 +39,17 @@ class UserController:
                 "message": "The username should be a normal string without special characters"
             }),
 
-        if not check_length_of_phone_number(phone_number):
+        if len (data['phone_number']) < 10:
             return jsonify({
                 "status": "400",
                 "message": "The phone number should be a string of atleast 10 digits"
             }), 400
-        if not check_format_of_phone_number(phone_number):
+        if not check_format_of_phone_number(data['phone_number']):
             return jsonify({
                 "status": "400",
                 "message": "The phone number should be a string of only digits from 0 to 9"
             }), 400
-        if not check_proper_email_format(email):
+        if not check_proper_email_format(data['email']):
             return jsonify({
                 "status": "400",
                 "message": "The email address is in the wrong format"
@@ -126,9 +116,3 @@ class UserController:
         return jsonify({
             "status": 400,
             "message": "Please enter valid username and password"}), 400
-
-    def get_all_users(self):
-        pass
-
-    def get_a_single_user(self, user_id):
-        pass

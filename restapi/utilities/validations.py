@@ -7,7 +7,7 @@ def check_proper_email_format(email):
         email)
 
 def check_length_of_phone_number(phonenumber):
-    return len(phonenumber) > 10 
+    return len(phonenumber) < 10 
 
 def check_format_of_phone_number(phonenumber):
     return re.match( [0-9], phonenumber)

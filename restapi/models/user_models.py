@@ -2,6 +2,7 @@ from datetime import datetime
 from restapi.models.database import DatabaseConnect
 from flask import jsonify
 
+
 class Users:
     def __init__(self):
         self.conn = DatabaseConnect()
@@ -37,24 +38,15 @@ class Users:
 
     def check_login_user(self, username, password):
         """login user"""
-        sql = "SELECT * FROM users WHERE username='{}'".format(username) + "and password='{}'".format(password)
+        sql = "SELECT * FROM users WHERE username='{}'".format(
+            username) + "and password='{}'".format(password)
         self.conn.cur.execute(sql)
         users = self.conn.cur.fetchone()
         return users
-    def create_admin_in_db(self):
-        """function to create a default administrator"""
-        created_at = datetime.now()
-        sql = "INSERT INTO users(\
-                username, email, password, firstname,\
-                lastname, othername, phonenumber, created_at)"\
-              " VALUES('admin', 'admin256@gmail.com', 'admin123','jean','mark','kairumba','0758638747','{}'".format(created_at)
-        self.conn.cur.execute(sql)
-        
+
     def get_user(self, user_id):
         """checks whether the current user is an admin"""
         sql = "SELECT * FROM users WHERE user_id='{}'".format(user_id)
         self.conn.cur.execute(sql)
         role = self.conn.cur.fetchone()
         return role
-
-
