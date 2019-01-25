@@ -1,10 +1,11 @@
+import re
+import datetime
 from flask import request, jsonify
 from flask_jwt_extended import create_access_token
 from restapi.models.user_models import Users
-import datetime
-
-
-import re
+from restapi.utilities.validations import check_length_of_phone_number,\
+    check_format_of_phone_number, check_unfilled_fields,\
+    check_length_of_fields, check_proper_email_format, check_special_characters
 
 
 class UserController:
@@ -31,24 +32,34 @@ class UserController:
                 "status": "400",
                 "message": "A key is missing"
             })
-
-        if not isinstance(first_name, str) or not isinstance(last_name, str) or not isinstance(othernames, str):
+        if check_unfilled_fields(data['username'], data['last_name'], data['othernames'],
+                                 data['phone_number'], data['email'], data['password']):
             return jsonify({
                 "status": "400",
-                "message": "All the names have to be of type string"
-            }), 400
+                "message": "Please fill in a missing field"
+            })
+        if check_length_of_fields(data['username'], data['last_name'], data['othernames']):
+            return jsonify({
+                "status": "400",
+                "message": "The names should have a length of at most 30 characters"
+            })
+        if check_special_characters(data['username']):
+            return jsonify({
+                "status": "400",
+                "message": "The username should be a normal string without special characters"
+            })
 
-        if len(phone_number) < 10:
+        if not check_length_of_phone_number(phone_number):
             return jsonify({
                 "status": "400",
                 "message": "The phone number should be a string of atleast 10 digits"
             }), 400
-        if not re.match("[0-9]", phone_number):
+        if not check_format_of_phone_number(phone_number):
             return jsonify({
                 "status": "400",
                 "message": "The phone number should be a string of only digits from 0 to 9"
             }), 400
-        if not re.match(r"[^@.]+@[A-Za-z]+\.[a-z]+", email):
+        if not check_proper_email_format(email):
             return jsonify({
                 "status": "400",
                 "message": "The email address is in the wrong format"
@@ -81,7 +92,8 @@ class UserController:
 
         exp = datetime.timedelta(days=3)
 
-        token = create_access_token(identity=current_user_id, expires_delta=exp)       
+        token = create_access_token(
+            identity=current_user_id, expires_delta=exp)
         return jsonify({
             "status": 201,
             "data": [{
@@ -105,7 +117,8 @@ class UserController:
 
             exp = datetime.timedelta(days=4)
 
-            token = create_access_token(identity=current_user_id, expires_delta=exp)
+            token = create_access_token(
+                identity=current_user_id, expires_delta=exp)
             return jsonify({
                 "message": "successfully logged in",
                 "token": token
