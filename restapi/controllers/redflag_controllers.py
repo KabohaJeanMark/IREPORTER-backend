@@ -47,7 +47,7 @@ class RedflagController():
             "data": [{
                 "id": red_id['redflag_id'],
                 "message": "Created red_flag record"}]
-                }), 201
+        }), 201
 
     def get_all_redflags(self):
         redflag = Redflags().get_all_redflag_records()

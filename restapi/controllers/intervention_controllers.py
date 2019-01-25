@@ -39,7 +39,7 @@ class InterventionsController():
                                                    images=data['images'],
                                                    videos=data['videos'],
                                                    comment=data['comment'],
-                                                   created_by= get_jwt_identity()
+                                                   created_by=get_jwt_identity()
                                                    )
 
         return jsonify({
@@ -54,7 +54,7 @@ class InterventionsController():
         intervention = Interventions().get_all_intervention_records()
         if intervention:
             return jsonify({'status': 200,
-                            'data': intervention}),200
+                            'data': intervention}), 200
         return jsonify({'error': 'intervention not found'}), 400
 
     def get_all_a_users_interventions(self, user_id):
@@ -62,14 +62,14 @@ class InterventionsController():
         if single_user_interv:
             return jsonify({'status': 200,
                             'data': single_user_interv
-                            }),200
+                            }), 200
         return jsonify({'error': 'Intervention not found'}), 400
 
     def get_a_single_intervention(self, intervention_id):
         one_intervention = Interventions().get_one_intervention(intervention_id)
         if one_intervention:
             return jsonify({'status': 200,
-                            'data': one_intervention}),200
+                            'data': one_intervention}), 200
         return jsonify({'error': 'Intervention record is not found'}), 400
 
     def delete_intervention(self, intervention_id):
@@ -81,7 +81,7 @@ class InterventionsController():
                     "id": delete_int,
                     "message": "Intervention record has been deleted"
                 }]
-            }),200
+            }), 200
         return jsonify({'error': 'Intervention record is not found'}), 400
 
     def admin_update_stat(self, intervention_id):

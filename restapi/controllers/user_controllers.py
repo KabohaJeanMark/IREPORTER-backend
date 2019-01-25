@@ -37,17 +37,17 @@ class UserController:
             return jsonify({
                 "status": "400",
                 "message": "Please fill in a missing field"
-            })
+            }), 400
         if check_length_of_fields(data['username'], data['last_name'], data['othernames']):
             return jsonify({
                 "status": "400",
                 "message": "The names should have a length of at most 30 characters"
-            })
+            }), 400
         if check_special_characters(data['username']):
             return jsonify({
                 "status": "400",
                 "message": "The username should be a normal string without special characters"
-            })
+            }),
 
         if not check_length_of_phone_number(phone_number):
             return jsonify({
