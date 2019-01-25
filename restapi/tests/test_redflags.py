@@ -70,6 +70,27 @@ class TestRedflags(TestDb):
 
         self.assertEqual(response.status_code, 200)
 
+    def test_delete_a_redflags(self):
+        token = self.create_token()
+        redflag_data = {
+            "comment": "Misappropiate allocation of funds",
+            "images": "bribe1.jpeg",
+            "location": "Mbarara ",
+            "videos": "bribe2.mp4"
+        }
+        res = self.app.post(
+            '/api/v1/redflags', content_type='application/json',
+            headers={'Authorization': f'Bearer {token}'}, data=json.dumps(redflag_data))
+        self.assertEqual(res.status_code, 201)
+        response = self.app.delete(
+            '/api/v1/redflags/1', content_type='application/json',
+            headers={'Authorization': f'Bearer {token}'})
+
+        self.assertEqual(response.status_code, 200)
+
+
+
+
     
 
 
