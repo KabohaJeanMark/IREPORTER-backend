@@ -23,25 +23,30 @@ def add_intervention():
 def get_all_the_interventions():
     return myIntervention.get_all_interventions()
 
+
 @jwt_required
 @BPrint.route("user/interventions/<int:user_id>", methods=["GET"])
 def get_all_a_users_interventions(user_id):
     return myIntervention.get_all_a_users_interventions(user_id)
+
 
 @jwt_required
 @BPrint.route("/interventions/<int:intervention_id>", methods=["GET"])
 def get_intervention(intervention_id):
     return myIntervention.get_a_single_intervention(intervention_id)
 
+
 @jwt_required
 @BPrint.route("/interventions/<int:intervention_id>", methods=["DELETE"])
 def delete_intervention(intervention_id):
     return myIntervention.delete_intervention(intervention_id)
 
+
 @jwt_required
 @BPrint.route("/interventions/<int:intervention_id>/location", methods=["PATCH"])
 def update_interventions_location(intervention_id):
     return myIntervention.update_intervention_location(intervention_id)
+
 
 @jwt_required
 @BPrint.route("/interventions/<int:intervention_id>/comment", methods=["PATCH"])
