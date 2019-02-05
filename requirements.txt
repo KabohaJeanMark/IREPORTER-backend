@@ -13,6 +13,7 @@ coveralls==1.5.1
 cryptography==2.5
 docopt==0.6.2
 Flask==1.0.2
+Flask-Cors==3.0.7
 Flask-JWT-Extended==3.16.0
 Flask-Testing==0.7.1
 gunicorn==19.9.0
