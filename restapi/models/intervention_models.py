@@ -6,16 +6,17 @@ class Interventions:
     def __init__(self):
         self.conn = DatabaseConnect()
 
-    def add_intervention(self, location, images, videos, comment, created_by):
+    def add_intervention(self, name, description,latitude, longitude, images, comment, incident_type, created_by):
         created_at = datetime.now()
-        sql = """INSERT INTO interventions(\
-                location, images, videos,\
-                comment, created_at, user_id)\
-                VALUES('{}','{}','{}','{}','{}','{}') RETURNING intervention_id"""\
-              .format(location,images, videos, comment, created_at, created_by)
+        sql = """INSERT INTO incidents(\
+                name, description,latitude,\
+                longitude,images, comment,\
+                incident_type, created_at, user_id)\
+                VALUES('{}','{}','{}','{}','{}','{}','{}','{}','{}') RETURNING incident_id"""\
+              .format( name, description,latitude, longitude, images, comment, incident_type, created_at, created_by)
         self.conn.cur.execute(sql)
-        intervention = self.conn.cur.fetchone()
-        return intervention
+        incident = self.conn.cur.fetchone()
+        return incident
 
     def get_all_intervention_records(self):
         """function that fetches all interventions"""

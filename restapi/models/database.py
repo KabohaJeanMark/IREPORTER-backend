@@ -55,45 +55,49 @@ class DatabaseConnect:
             admin BOOLEAN DEFAULT FALSE) 
             """
 
-        intervention_table = """
-            CREATE TABLE IF NOT EXISTS interventions(
-            intervention_id serial PRIMARY KEY NOT NULL,
-            location VARCHAR(100) NOT NULL,
+        redflags_table = """
+            CREATE TABLE IF NOT EXISTS redflags(
+            redflag_id serial PRIMARY KEY NOT NULL,
+            name VARCHAR (20) N0T NULL,
+            description VARCHAR (100) N0T NULL,
+            latitude VARCHAR(10) NOT NULL,
+            longitude VARCHAR(10) NOT NULL,
             status VARCHAR(100) DEFAULT'draft',
             images VARCHAR(100) NOT NULL,
-            videos VARCHAR(100) NOT NULL,
             comment VARCHAR(100) NOT NULL,
             created_at VARCHAR(100) NOT NULL,
-            type VARCHAR (20) DEFAULT'intervention',
+            type VARCHAR (20) NOT NULL,
             user_id INT NOT NULL,
             FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE ON UPDATE CASCADE 
             )
             """
-        redflag_table = """
-            CREATE TABLE IF NOT EXISTS redflags(
-            redflag_id serial PRIMARY KEY NOT NULL,
-            location VARCHAR(100) NOT NULL,
+        interventions_table = """
+            CREATE TABLE IF NOT EXISTS interventions(
+            intervention_id serial PRIMARY KEY NOT NULL,
+            name VARCHAR (20) N0T NULL,
+            description VARCHAR (100) N0T NULL,
+            latitude VARCHAR(10) NOT NULL,
+            longitude VARCHAR(10) NOT NULL,
             status VARCHAR(100) DEFAULT'draft',
             images VARCHAR(100) NOT NULL,
-            videos VARCHAR(100) NOT NULL,
             comment VARCHAR(100) NOT NULL,
             created_at VARCHAR(100) NOT NULL,
-            type VARCHAR (20) DEFAULT'redflag',
+            type VARCHAR (20) NOT NULL,
             user_id INT NOT NULL,
             FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE ON UPDATE CASCADE 
             )
             """
 
         self.cur.execute(user_table)
-        self.cur.execute(intervention_table)
-        self.cur.execute(redflag_table)
+        self.cur.execute(redflags_table)
+        self.cur.execute(interventions_table)
         print("tables created successfully")
 
     def drop_tables(self):
         """function that drops the tables"""
         
-        self.cur.execute("drop table redflags")
         self.cur.execute("drop table interventions")
+        self.cur.execute("drop table redflags")
         self.cur.execute("drop table users")
         return print('tables dropped successfully')
 
