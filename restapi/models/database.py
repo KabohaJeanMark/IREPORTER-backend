@@ -57,33 +57,33 @@ class DatabaseConnect:
 
         redflags_table = """
             CREATE TABLE IF NOT EXISTS redflags(
-            redflag_id serial PRIMARY KEY NOT NULL,
-            name VARCHAR (20) N0T NULL,
-            description VARCHAR (100) N0T NULL,
-            latitude VARCHAR(10) NOT NULL,
-            longitude VARCHAR(10) NOT NULL,
+            redflag_id serial PRIMARY KEY,
+            name VARCHAR(20),
+            description VARCHAR(500),
+            latitude VARCHAR(10),
+            longitude VARCHAR(10),
             status VARCHAR(100) DEFAULT'draft',
-            images VARCHAR(100) NOT NULL,
-            comment VARCHAR(100) NOT NULL,
-            created_at VARCHAR(100) NOT NULL,
-            type VARCHAR (20) NOT NULL,
-            user_id INT NOT NULL,
+            images VARCHAR(100),
+            comment VARCHAR(100),
+            created_at VARCHAR(100),
+            type VARCHAR(20) DEFAULT'redflag',
+            user_id INT,
             FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE ON UPDATE CASCADE 
             )
             """
         interventions_table = """
             CREATE TABLE IF NOT EXISTS interventions(
-            intervention_id serial PRIMARY KEY NOT NULL,
-            name VARCHAR (20) N0T NULL,
-            description VARCHAR (100) N0T NULL,
-            latitude VARCHAR(10) NOT NULL,
-            longitude VARCHAR(10) NOT NULL,
+            intervention_id serial PRIMARY KEY,
+            name VARCHAR(20),
+            description VARCHAR(100),
+            latitude VARCHAR(10),
+            longitude VARCHAR(10),
             status VARCHAR(100) DEFAULT'draft',
-            images VARCHAR(100) NOT NULL,
-            comment VARCHAR(100) NOT NULL,
-            created_at VARCHAR(100) NOT NULL,
-            type VARCHAR (20) NOT NULL,
-            user_id INT NOT NULL,
+            images VARCHAR(100),
+            comment VARCHAR(100),
+            created_at VARCHAR(100),
+            type VARCHAR (20) DEFAULT'intervention',
+            user_id INT,
             FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE ON UPDATE CASCADE 
             )
             """

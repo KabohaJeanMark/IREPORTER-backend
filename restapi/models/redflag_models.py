@@ -6,16 +6,17 @@ class Redflags:
     def __init__(self):
         self.conn = DatabaseConnect()
 
-    def add_redflag(self, location, images, videos, comment, created_by):
+    def add_redflag(self, name, description,latitude, longitude, images, comment, created_by):
         created_at = datetime.now()
-        sql = """INSERT INTO redflags(\
-                location, images, videos,\
-                comment, created_at, user_id)\
-                VALUES('{}','{}','{}','{}','{}','{}') RETURNING redflag_id"""\
-              .format(location, images, videos, comment, created_at, created_by)
+        sql = """INSERT INTO redflags(name, \
+                 description,latitude,\
+                longitude,images, comment,\
+                created_at, user_id)\
+                VALUES('{}','{}','{}','{}','{}','{}','{}','{}') RETURNING redflag_id"""\
+              .format(name, description,latitude, longitude, images, comment, created_at, created_by)
         self.conn.cur.execute(sql)
-        redflag = self.conn.cur.fetchone()
-        return redflag
+        incident = self.conn.cur.fetchone()
+        return incident
 
     def get_all_redflag_records(self):
         """function that fetches all redflags"""

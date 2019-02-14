@@ -6,14 +6,14 @@ class Interventions:
     def __init__(self):
         self.conn = DatabaseConnect()
 
-    def add_intervention(self, name, description,latitude, longitude, images, comment, incident_type, created_by):
+    def add_intervention(self, name, description,latitude, longitude, images, comment, created_by):
         created_at = datetime.now()
-        sql = """INSERT INTO incidents(\
+        sql = """INSERT INTO interventions(\
                 name, description,latitude,\
                 longitude,images, comment,\
-                incident_type, created_at, user_id)\
-                VALUES('{}','{}','{}','{}','{}','{}','{}','{}','{}') RETURNING incident_id"""\
-              .format( name, description,latitude, longitude, images, comment, incident_type, created_at, created_by)
+                created_at, user_id)\
+                VALUES('{}','{}','{}','{}','{}','{}','{}','{}') RETURNING incident_id"""\
+              .format( name, description,latitude, longitude, images, comment, created_at, created_by)
         self.conn.cur.execute(sql)
         incident = self.conn.cur.fetchone()
         return incident

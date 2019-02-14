@@ -13,31 +13,22 @@ class RedflagController():
 
         redflags = Redflags()
         data = request.get_json()
+        
+        name = data.get("name")
+        description = data.get("description")
+        latitude = data.get("latitude")
+        longitude = data.get("longitude")
         images = data.get("images")
-        videos = data.get("videos")
         comment = data.get("comment")
-        location = data.get("location")
         created_by = get_jwt_identity()
 
-        postman_strings = [images, videos, comment, location]
-        postman_data = [images, videos, comment, location]
 
-        for value in postman_strings:
-            if not isinstance(value, str):
-                return jsonify({
-                    "status": "404",
-                    "message": "'{}' should be a string".format(value)
-                })
-        for v in postman_data:
-            if not v:
-                return jsonify({
-                    "status": "400",
-                    "message": "{} field is missing".format(v)
-                })
 
-        red_id = redflags.add_redflag(location=data['location'],
+        red_id = redflags.add_redflag(name=data['name'],
+                                      description= data['description'], 
+                                      latitude=data['latitude'],
+                                      longitude=data['longitude'],
                                       images=data['images'],
-                                      videos=data['videos'],
                                       comment=data['comment'],
                                       created_by=get_jwt_identity()
                                       )
