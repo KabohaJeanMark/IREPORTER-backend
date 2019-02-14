@@ -8,12 +8,12 @@ class Interventions:
 
     def add_intervention(self, name, description,latitude, longitude, images, comment, created_by):
         created_at = datetime.now()
-        sql = """INSERT INTO interventions(\
-                name, description,latitude,\
+        sql = """INSERT INTO interventions(name, \
+                 description,latitude,\
                 longitude,images, comment,\
                 created_at, user_id)\
-                VALUES('{}','{}','{}','{}','{}','{}','{}','{}') RETURNING incident_id"""\
-              .format( name, description,latitude, longitude, images, comment, created_at, created_by)
+                VALUES('{}','{}','{}','{}','{}','{}','{}','{}') RETURNING intervention_id"""\
+              .format(name, description,latitude, longitude, images, comment, created_at, created_by)
         self.conn.cur.execute(sql)
         incident = self.conn.cur.fetchone()
         return incident
