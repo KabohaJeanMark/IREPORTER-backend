@@ -1,16 +1,17 @@
 from flask import Blueprint, jsonify
-from restapi.controllers.redflag_controllers import RedflagController
+from restapi.controllers.incident_controllers import IncidentController
 from flask_jwt_extended import jwt_required
 
 bp = Blueprint("redflag_views", __name__, url_prefix="/api/v1")
 
-myRedflag = RedflagController()
+myIncident = IncidentController()
 
 
-@bp.route("/redflags", methods=["POST"])
+@bp.route("/incidents/<incident_type>", methods=["POST"])
 @jwt_required
-def add_redflag():
-    return myRedflag.create_redflag()
+def add_incidents(incident_type):
+    incident_type = incident_type
+    return myIncident.create_incident(incident_type)
 
 
 @jwt_required

@@ -1,6 +1,7 @@
 import psycopg2
 from psycopg2 import extras
 import os
+from datetime import datetime
 
 class DatabaseConnect:
     """class that establishes database connection, creates various tables and drops the tables """
@@ -55,25 +56,10 @@ class DatabaseConnect:
             admin BOOLEAN DEFAULT FALSE) 
             """
 
-        redflags_table = """
-            CREATE TABLE IF NOT EXISTS redflags(
-            redflag_id serial PRIMARY KEY,
-            name VARCHAR(20),
-            description VARCHAR(500),
-            latitude VARCHAR(10),
-            longitude VARCHAR(10),
-            status VARCHAR(100) DEFAULT'draft',
-            images VARCHAR(100),
-            comment VARCHAR(100),
-            created_at VARCHAR(100),
-            type VARCHAR(20) DEFAULT'redflag',
-            user_id INT,
-            FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE ON UPDATE CASCADE 
-            )
-            """
-        interventions_table = """
-            CREATE TABLE IF NOT EXISTS interventions(
-            intervention_id serial PRIMARY KEY,
+        incidents_table = """
+            CREATE TABLE IF NOT EXISTS incidents(
+            incident_id serial PRIMARY KEY,
+            type VARCHAR (20),
             name VARCHAR(20),
             description VARCHAR(100),
             latitude VARCHAR(10),
@@ -82,22 +68,30 @@ class DatabaseConnect:
             images VARCHAR(100),
             comment VARCHAR(100),
             created_at VARCHAR(100),
-            type VARCHAR (20) DEFAULT'intervention',
             user_id INT,
             FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE ON UPDATE CASCADE 
             )
             """
 
         self.cur.execute(user_table)
-        self.cur.execute(redflags_table)
-        self.cur.execute(interventions_table)
+        self.cur.execute(incidents_table)
         print("tables created successfully")
 
     def drop_tables(self):
         """function that drops the tables"""
         
-        self.cur.execute("drop table interventions")
-        self.cur.execute("drop table redflags")
+        self.cur.execute("drop table incidents")
         self.cur.execute("drop table users")
         return print('tables dropped successfully')
 
+    def add_incident(self, incident_type, name, description,latitude, longitude, images, comment, created_by):
+        created_at = datetime.now()
+        sql = """INSERT INTO incidents(type,name, \
+                 description,latitude,\
+                longitude,images, comment,\
+                created_at, user_id)\
+                VALUES('{}','{}','{}','{}','{}','{}','{}','{}','{}') RETURNING incident_id"""\
+              .format(incident_type, name, description,latitude, longitude, images, comment, created_at, created_by)
+        self.cur.execute(sql)
+        incident = self.cur.fetchone()
+        return incident

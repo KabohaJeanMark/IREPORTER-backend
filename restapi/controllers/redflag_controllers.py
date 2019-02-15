@@ -1,7 +1,7 @@
 from flask import request, jsonify
 from flask_jwt_extended import get_jwt_identity
 from datetime import datetime
-from restapi.models.redflag_models import Redflags
+from restapi.models.database import DatabaseConnect
 
 
 class RedflagController():
@@ -9,11 +9,11 @@ class RedflagController():
     def __init__(self):
         pass
 
-    def create_redflag(self):
+    def create_redflag(self, incident_type):
 
-        redflags = Redflags()
+        db = DatabaseConnect()
         data = request.get_json()
-        
+        incident_type = incident_type
         name = data.get("name")
         description = data.get("description")
         latitude = data.get("latitude")
@@ -24,20 +24,22 @@ class RedflagController():
 
 
 
-        red_id = redflags.add_redflag(name=data['name'],
+        incident_id = db.add_incident(incident_type= incident_type,
+                                      name=data['name'],
                                       description= data['description'], 
                                       latitude=data['latitude'],
                                       longitude=data['longitude'],
                                       images=data['images'],
                                       comment=data['comment'],
                                       created_by=get_jwt_identity()
+                                      
                                       )
 
         return jsonify({
             "status": 201,
             "data": [{
-                "id": red_id['redflag_id'],
-                "message": "Created red_flag record"}]
+                "id": incident_id['incident_id'],
+                "message": "Created incident record"}]
         }), 201
 
     def get_all_redflags(self):

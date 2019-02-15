@@ -6,14 +6,14 @@ class Redflags:
     def __init__(self):
         self.conn = DatabaseConnect()
 
-    def add_redflag(self, name, description,latitude, longitude, images, comment, created_by):
+    def add_redflag(self, incident_type, name, description,latitude, longitude, images, comment, created_by):
         created_at = datetime.now()
-        sql = """INSERT INTO redflags(name, \
+        sql = """INSERT INTO incidents(type,name, \
                  description,latitude,\
                 longitude,images, comment,\
                 created_at, user_id)\
-                VALUES('{}','{}','{}','{}','{}','{}','{}','{}') RETURNING redflag_id"""\
-              .format(name, description,latitude, longitude, images, comment, created_at, created_by)
+                VALUES('{}','{}','{}','{}','{}','{}','{}','{}','{}') RETURNING redflag_id"""\
+              .format(incident_type, name, description,latitude, longitude, images, comment, created_at, created_by)
         self.conn.cur.execute(sql)
         incident = self.conn.cur.fetchone()
         return incident
