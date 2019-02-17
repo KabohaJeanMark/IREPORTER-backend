@@ -95,3 +95,18 @@ class DatabaseConnect:
         self.cur.execute(sql)
         incident = self.cur.fetchone()
         return incident
+
+    def get_all_incident_records(self, incident_type):
+        """function that fetches all incidents by type"""
+        sql = """ SELECT * FROM incidents WHERE type='{}' ORDER BY created_at DESC """.format(incident_type)
+        self.cur.execute(sql)
+        incidents = self.cur.fetchall()
+        return incidents
+
+    def get_one_incident(self, incident_type, incident_id):
+        """function that fetches one redflag"""
+        sql = "SELECT * FROM incidents WHERE type='{}' AND incident_id='{}'".format(
+            incident_type,incident_id)+"ORDER BY created_at DESC"
+        self.cur.execute(sql)
+        incidents = self.cur.fetchone()
+        return incidents

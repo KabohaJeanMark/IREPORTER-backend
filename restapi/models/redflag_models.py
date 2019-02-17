@@ -18,7 +18,7 @@ class Redflags:
         incident = self.conn.cur.fetchone()
         return incident
 
-    def get_all_redflag_records(self):
+    def get_all_incident_records(self):
         """function that fetches all redflags"""
         sql = """ SELECT * FROM redflags ORDER BY created_at DESC """
         self.conn.cur.execute(sql)
