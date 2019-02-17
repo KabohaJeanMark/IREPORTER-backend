@@ -13,16 +13,6 @@ class IncidentController():
 
         db = DatabaseConnect()
         data = request.get_json()
-        incident_type = incident_type
-        name = data.get("name")
-        description = data.get("description")
-        latitude = data.get("latitude")
-        longitude = data.get("longitude")
-        images = data.get("images")
-        comment = data.get("comment")
-        created_by = get_jwt_identity()
-
-
 
         incident_id = db.add_incident(incident_type= incident_type,
                                       name=data['name'],
@@ -56,14 +46,14 @@ class IncidentController():
                             'data': one_redflag})
         return jsonify({'error': 'Incident record is not found'}), 400
 
-    def delete_redflag(self, redflag_id):
-        del_int = Redflags().delete_one_redflag(redflag_id)
+    def delete_incident(self, incident_type ,incident_id):
+        del_int = DatabaseConnect().delete_one_incident(incident_type,incident_id)
         if del_int:
             return jsonify({
                 "status": 200,
                 "data": [{
                     "id": del_int,
-                    "message": "Red_flag record has been deleted"
+                    "message": "Incident record has been deleted"
                 }]
             })
-        return jsonify({'error': 'Redflag record is not found'}), 400
+        return jsonify({'error': 'Incident record is not found'}), 400

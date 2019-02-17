@@ -110,3 +110,11 @@ class DatabaseConnect:
         self.cur.execute(sql)
         incidents = self.cur.fetchone()
         return incidents
+
+    def delete_one_incident(self, incident_type ,incident_id):
+        """ function that deletes a redflag record"""
+        delete_query = "DELETE FROM incidents WHERE type='{}' AND incident_id = '{}'".format(
+            incident_type,incident_id)
+        deleted_interv = incident_id
+        self.cur.execute(delete_query)
+        return deleted_interv
