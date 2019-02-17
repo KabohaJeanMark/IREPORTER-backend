@@ -7,6 +7,7 @@ bp = Blueprint("incident_views", __name__, url_prefix="/api/v1")
 myIncident = IncidentController()
 
 
+
 @bp.route("/incidents/<incident_type>", methods=["POST"])
 @jwt_required
 def add_incidents(incident_type):
