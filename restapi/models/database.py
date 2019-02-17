@@ -136,3 +136,10 @@ class DatabaseConnect:
         self.cur.execute(sql)
         comm_id = incident_id
         return comm_id
+
+    def admin_update_status(self, status, incident_type, incident_id):
+        """function that enables the admin to update the incident status"""
+        sql = "UPDATE incidents SET status='{}'".format(status) + " WHERE incident_type='{}' AND incident_id='{}'".format(incident_type,incident_id)
+        self.cur.execute(sql)
+        stat_id = incident_id
+        return stat_id
