@@ -3,6 +3,7 @@ from psycopg2 import extras
 import os
 from datetime import datetime
 
+
 class DatabaseConnect:
     """class that establishes database connection, creates various tables and drops the tables """
 
@@ -27,8 +28,8 @@ class DatabaseConnect:
             self.connection = psycopg2.connect(
                 dbname=self.dbname,
                 user=self.user,
-                host= self.host,
-                password=self.password, 
+                host=self.host,
+                password=self.password,
                 port=5432
             )
             self.connection.autocommit = True
@@ -79,26 +80,27 @@ class DatabaseConnect:
 
     def drop_tables(self):
         """function that drops the tables"""
-        
+
         self.cur.execute("drop table incidents")
         self.cur.execute("drop table users")
         return print('tables dropped successfully')
 
-    def add_incident(self, incident_type, name, description,latitude, longitude, images, comment, created_by):
+    def add_incident(self, incident_type, name, description, latitude, longitude, images, comment, created_by):
         created_at = datetime.now()
         sql = """INSERT INTO incidents(type,name, \
                  description,latitude,\
                 longitude,images, comment,\
                 created_at, user_id)\
                 VALUES('{}','{}','{}','{}','{}','{}','{}','{}','{}') RETURNING incident_id"""\
-              .format(incident_type, name, description,latitude, longitude, images, comment, created_at, created_by)
+              .format(incident_type, name, description, latitude, longitude, images, comment, created_at, created_by)
         self.cur.execute(sql)
         incident = self.cur.fetchone()
         return incident
 
     def get_all_incident_records(self, incident_type):
         """function that fetches all incidents by type"""
-        sql = """ SELECT * FROM incidents WHERE type='{}' ORDER BY created_at DESC """.format(incident_type)
+        sql = """ SELECT * FROM incidents WHERE type='{}' ORDER BY created_at DESC """.format(
+            incident_type)
         self.cur.execute(sql)
         incidents = self.cur.fetchall()
         return incidents
@@ -106,15 +108,31 @@ class DatabaseConnect:
     def get_one_incident(self, incident_type, incident_id):
         """function that fetches one redflag"""
         sql = "SELECT * FROM incidents WHERE type='{}' AND incident_id='{}'".format(
-            incident_type,incident_id)+"ORDER BY created_at DESC"
+            incident_type, incident_id)+"ORDER BY created_at DESC"
         self.cur.execute(sql)
         incidents = self.cur.fetchone()
         return incidents
 
-    def delete_one_incident(self, incident_type ,incident_id):
+    def delete_one_incident(self, incident_type, incident_id):
         """ function that deletes a redflag record"""
         delete_query = "DELETE FROM incidents WHERE type='{}' AND incident_id = '{}'".format(
-            incident_type,incident_id)
+            incident_type, incident_id)
         deleted_interv = incident_id
         self.cur.execute(delete_query)
         return deleted_interv
+
+    def update_location(self, latitude, longitude, incident_type, incident_id):
+        """function that updates the location"""
+        sql = "UPDATE incidents SET latitude='{}',longitude='{}'".format(
+            latitude, longitude) + " WHERE type='{}' AND incident_id='{}'".format(incident_type, incident_id)
+        self.cur.execute(sql)
+        loc_id = incident_id
+        return loc_id
+
+    def update_comment(self, comment, incident_type, incident_id):
+        """function that updates the comment"""
+        sql = "UPDATE incidents SET comment='{}'".format(
+            comment) + " WHERE type ='{}' AND incident_id='{}'".format(incident_type, incident_id)
+        self.cur.execute(sql)
+        comm_id = incident_id
+        return comm_id

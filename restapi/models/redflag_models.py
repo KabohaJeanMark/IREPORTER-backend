@@ -48,16 +48,11 @@ class Redflags:
         stat_id = redflag_id
         return stat_id
 
-    def update_location(self, location, redflag_id):
+    def update_patch(self, incident_type, patch_type, incident_id):
         """function that updates the location"""
-        sql = "UPDATE redflags SET location='{}'".format(location) + " WHERE redflag_id='{}'".format(redflag_id)
+        sql = "UPDATE incidents SET comment='{}'".format(patch_type, location) + " WHERE incident_type='{}' AND incident_id='{}'".format(incident_type, incident_id)
         self.conn.cur.execute(sql)
         loc_id = redflag_id
         return loc_id       
 
-    def update_comment(self, comment, redflag_id):
-        """function that updates the comment"""
-        sql = "UPDATE redflags SET comment='{}'".format(comment) + " WHERE redflag_id='{}'".format(redflag_id)
-        self.conn.cur.execute(sql)
-        comm_id = redflag_id
-        return comm_id         
+      

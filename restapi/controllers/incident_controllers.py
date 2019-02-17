@@ -57,3 +57,36 @@ class IncidentController():
                 }]
             })
         return jsonify({'error': 'Incident record is not found'}), 400
+
+    def update_incident_location(self, incident_type ,incident_id):
+        data = request.get_json()
+        latitude = data['latitude']
+        longitude = data['longitude']
+
+        loc_int = DatabaseConnect().update_location(
+            data['latitude'],data['longitude'],incident_type,incident_id)
+        if loc_int:
+            return jsonify({
+                "status": 201,
+                "data": [{
+                    "id": loc_int,
+                    "message": "Updated incident's location"
+                }]
+            }), 201
+        return jsonify({'error': 'Incident record is not found'}), 400
+
+    def update_incident_comment(self, incident_type ,incident_id):
+        data = request.get_json()
+        
+
+        loc_int = DatabaseConnect().update_comment(
+            data['comment'], incident_type,incident_id)
+        if loc_int:
+            return jsonify({
+                "status": 201,
+                "data": [{
+                    "id": loc_int,
+                    "message": "Updated incident's comment"
+                }]
+            }), 201
+        return jsonify({'error': 'Incident record is not found'}), 400

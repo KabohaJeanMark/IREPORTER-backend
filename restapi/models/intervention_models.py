@@ -56,16 +56,16 @@ class Interventions:
         stat_id = intervention_id
         return stat_id
 
-    def update_location(self, location, intervention_id):
+    def update_location(self, latitude, longitude, incident_type, incident_id):
         """function that updates the location"""
-        sql = "UPDATE interventions SET location='{}'".format(location) + " WHERE intervention_id='{}'".format(intervention_id)
+        sql = "UPDATE interventions SET latitude='{}' AND longitude='{}'".format(latitude, longitude) + " WHERE incident_type='{}' AND incident_id='{}'".format(incident_type,incident_id)
         self.conn.cur.execute(sql)
-        loc_id = intervention_id
+        loc_id = incident_id
         return loc_id       
 
-    def update_comment(self, comment, intervention_id):
+    def update_comment(self, comment, incident_type, incident_id):
         """function that updates the comment"""
-        sql = "UPDATE interventions SET comment='{}'".format(comment) + " WHERE intervention_id='{}'".format(intervention_id)
+        sql = "UPDATE interventions SET comment='{}'".format(comment) + " WHERE incident_type ='{}' AND incident_id='{}'".format(incident_type,incident_id)
         self.conn.cur.execute(sql)
-        comm_id = intervention_id
+        comm_id = incident_id
         return comm_id         
