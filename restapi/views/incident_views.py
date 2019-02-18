@@ -21,10 +21,9 @@ def protected(function):
             return jsonify({'error': 'token is missing!'}), 400
         try:
             data = jwt.decode(token, 'Secret Key')
-            current_user = {
-                user_id: data["user_id"],
-                is_admin: data["admin"]
-            }
+            #current_user = {"user_id": data['user_id'],"is_admin": data['admin']}
+            current_user = data
+            #current_user = data['user_id']
 
         except:
             return jsonify({'error': 'token is invalid!'}), 400
@@ -34,43 +33,42 @@ def protected(function):
 
 @bp.route("/incidents/<incident_type>", methods=["POST"])
 @protected
-def add_incidents(incident_type, current_user):
-    incident_type = incident_type
-    return myIncident.create_incident(incident_type, current_user)
+def add_incidents(current_user, incident_type):
+    return myIncident.create_incident(current_user,incident_type)
 
 
 @bp.route("/incidents/<incident_type>", methods=["GET"])
 @protected
-def get_all_the_incidents(incident_type, current_user):
+def get_all_the_incidents(current_user,incident_type):
     incident_type = incident_type
-    return myIncident.get_all_incidents(incident_type, current_user)
+    return myIncident.get_all_incidents(current_user,incident_type)
 
 
 @bp.route("/incidents/<incident_type>/<int:incident_id>", methods=["GET"])
 @protected
-def get_incident(incident_type, incident_id, current_user):
-    return myIncident.get_a_single_incident(incident_type, incident_id, current_user)
+def get_incident( current_user,incident_type, incident_id,):
+    return myIncident.get_a_single_incident( current_user,incident_type, incident_id)
 
 
 @bp.route("/incidents/<incident_type>/<int:incident_id>", methods=["DELETE"])
 @protected
-def delete_redflag(incident_type, incident_id, current_user):
-    return myIncident.delete_incident(incident_type, incident_id, current_user)
+def delete_incident( current_user,incident_type, incident_id):
+    return myIncident.delete_incident(current_user,incident_type, incident_id)
 
 
 @bp.route("/incidents/<incident_type>/<int:incident_id>/comment", methods=["PATCH"])
 @protected
-def update_incident_comment(incident_type, incident_id, current_user):
-    return myIncident.update_incident_comment(incident_type, incident_id, current_user)
+def update_incident_comment(current_user,incident_type, incident_id):
+    return myIncident.update_incident_comment(current_user,incident_type, incident_id)
 
 
 @bp.route("/incidents/<incident_type>/<int:incident_id>/location", methods=["PATCH"])
 @protected
-def update_incident_location(incident_type, incident_id, current_user):
-    return myIncident.update_incident_location(incident_type, incident_id, current_user)
+def update_incident_location(current_user,incident_type, incident_id):
+    return myIncident.update_incident_location(current_user,incident_type, incident_id)
 
 
 @bp.route("/incidents/<incident_type>/<int:incident_id>/status", methods=["PATCH"])
 @protected
-def update_incident_status(incident_type, incident_id, current_user):
-    return myIncident.admin_update_stat(incident_type, incident_id, current_user)
+def update_incident_status(current_user,incident_type, incident_id):
+    return myIncident.admin_update_stat(current_user,incident_type, incident_id)

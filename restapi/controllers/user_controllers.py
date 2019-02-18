@@ -14,7 +14,12 @@ class UserController:
 
     def create_users(self):
         data = request.get_json()
-
+        username = data['username']
+        last_name =data['last_name']
+        othernames = data['othernames']
+        phone_number = data['phone_number']
+        email = data['email']
+        password = data['password']
         if not data:
             return jsonify({
                 "status": "400",
@@ -67,8 +72,8 @@ class UserController:
                                            firstname=data['first_name'],
                                            lastname=data['last_name'],
                                            othernames=data['othernames'],
-                                           phonenumber=data['phone_number'],
-                                           isadmin = data['isadmin']
+                                           phonenumber=data['phone_number']
+                                           
                                            )
 
         return jsonify({
@@ -91,15 +96,16 @@ class UserController:
             user = self.database.get_user(data['username'])
             if user:
                 payload = {
-                    "first_name": user['firstname'],
-                    "last_name": user['lastname'],
-                    "othernames": user['othername'],
-                    "password": user['password'],
-                    "email": user['email'],
-                    "phone_number": user['phonenumber'],
-                    "username": user['username'],
-                    "isadmin": user['admin'],
-                    "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=60)
+                    'user_id': user['user_id'],
+                    'first_name': user['firstname'],
+                    'last_name': user['lastname'],
+                    'othernames': user['othername'],
+                    'password': user['password'],
+                    'email': user['email'],
+                    'phone_number': user['phonenumber'],
+                    'username': user['username'],
+                    'isadmin': user['admin'],
+                    'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
                 }
 
                 token = jwt.encode(payload, 'Secret Key')

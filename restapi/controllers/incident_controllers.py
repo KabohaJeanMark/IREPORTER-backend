@@ -8,12 +8,13 @@ class IncidentController():
     def __init__(self):
         pass
 
-    def create_incident(self, incident_type, current_user):
-
+    def create_incident(self,current_user,incident_type):
+# first arg is current_user and 2nd is incident_type
         db = DatabaseConnect()
         data = request.get_json()
 
-        incident_id = db.add_incident(incident_type=incident_type,
+        incident_id = db.add_incident(
+                                      incident_type=incident_type,
                                       name=data['name'],
                                       description=data['description'],
                                       latitude=data['latitude'],
@@ -21,7 +22,6 @@ class IncidentController():
                                       images=data['images'],
                                       comment=data['comment'],
                                       created_by=current_user['user_id']
-
                                       )
 
         return jsonify({
@@ -31,22 +31,22 @@ class IncidentController():
                 "message": "Created incident record"}]
         }), 201
 
-    def get_all_incidents(self, incident_type, current_user):
-        redflag = DatabaseConnect().get_all_incident_records(incident_type, current_user)
+    def get_all_incidents(self, current_user, incident_type):
+        redflag = DatabaseConnect().get_all_incident_records(current_user['user_id'], incident_type)
         if redflag:
             return jsonify({'status': 200,
                             'data': redflag})
         return jsonify({'error': 'Incident record is not found'}), 400
 
-    def get_a_single_incident(self, incident_type, incident_id):
-        one_redflag = DatabaseConnect().get_one_incident(incident_type, incident_id)
+    def get_a_single_incident(self, current_user, incident_type, incident_id):
+        one_redflag = DatabaseConnect().get_one_incident(current_user['user_id'],incident_type, incident_id)
         if one_redflag:
             return jsonify({'status': 200,
                             'data': one_redflag})
         return jsonify({'error': 'Incident record is not found'}), 400
 
-    def delete_incident(self, incident_type, incident_id):
-        del_int = DatabaseConnect().delete_one_incident(incident_type, incident_id)
+    def delete_incident(self,current_user, incident_type, incident_id):
+        del_int = DatabaseConnect().delete_one_incident(current_user['user_id'],incident_type, incident_id)
         if del_int:
             return jsonify({
                 "status": 200,
@@ -57,10 +57,10 @@ class IncidentController():
             })
         return jsonify({'error': 'Incident record is not found'}), 400
 
-    def update_incident_location(self, incident_type, incident_id):
+    def update_incident_location(self, current_user, incident_type, incident_id):
         data = request.get_json()
 
-        loc_int = DatabaseConnect().update_location(
+        loc_int = DatabaseConnect().update_location( current_user['user_id'],
             data['latitude'], data['longitude'], incident_type, incident_id)
         if loc_int:
             return jsonify({

@@ -45,23 +45,23 @@ class DatabaseConnect:
     def create_tables(self):
         """function  that creates tables in the database"""
         user_table = """CREATE TABLE IF NOT EXISTS users(
-            user_id serial PRIMARY KEY NOT NULL ,
-            username VARCHAR(100) UNIQUE NOT NULL,
-            email VARCHAR(100) UNIQUE NOT NULL,
-            password VARCHAR(100) NOT NULL,
-            firstname VARCHAR(100)  NOT NULL,
-            lastname VARCHAR(100)  NOT NULL,
-            othername VARCHAR(100)  NOT NULL,
-            phonenumber VARCHAR(15)  NOT NULL, 
-            created_at VARCHAR(100) NOT NULL,
-            admin BOOLEAN) 
+            user_id serial PRIMARY KEY,
+            username VARCHAR(100) UNIQUE,
+            email VARCHAR(100) UNIQUE,
+            password VARCHAR(100) ,
+            firstname VARCHAR(100),
+            lastname VARCHAR(100),
+            othername VARCHAR(100),
+            phonenumber VARCHAR(15), 
+            created_at VARCHAR(100),
+            admin BOOLEAN DEFAULT False)  
             """
 
         incidents_table = """
             CREATE TABLE IF NOT EXISTS incidents(
             incident_id serial PRIMARY KEY,
-            type VARCHAR (20),
-            name VARCHAR(20),
+            type VARCHAR (100),
+            name VARCHAR(100),
             description VARCHAR(100),
             latitude VARCHAR(10),
             longitude VARCHAR(10),
@@ -85,19 +85,19 @@ class DatabaseConnect:
         self.cur.execute("drop table users")
         return print('tables dropped successfully')
 
-    def add_incident(self, incident_type, name, description, latitude, longitude, images, comment, created_by):
+    def add_incident(self,incident_type, name, description, latitude, longitude, images, comment, created_by):
         created_at = datetime.now()
         sql = """INSERT INTO incidents(type,name, \
                  description,latitude,\
                 longitude,images, comment,\
-                created_at, user_id)\
-                VALUES('{}','{}','{}','{}','{}','{}','{}','{}','{}') RETURNING incident_id"""\
-              .format(incident_type, name, description, latitude, longitude, images, comment, created_at, created_by)
+                created_at,user_id)\
+                VALUES('{}','{}','{}','{}','{}','{}','{}','{}',{}') RETURNING incident_id"""\
+              .format(incident_type, name, description, latitude, longitude, images, comment, created_at,created_by)
         self.cur.execute(sql)
         incident = self.cur.fetchone()
         return incident
 
-    def get_all_incident_records(self, incident_type, current_user):
+    def get_all_incident_records(self,current_user, incident_type):
         """function that fetches all incidents by type"""
         sql = """ SELECT * FROM incidents WHERE type='{}' AND user_id ='{}' ORDER BY created_at DESC """.format(
             incident_type, current_user)
@@ -105,7 +105,7 @@ class DatabaseConnect:
         incidents = self.cur.fetchall()
         return incidents
 
-    def get_one_incident(self, incident_type, incident_id, current_user):
+    def get_one_incident(self,current_user, incident_type, incident_id):
         """function that fetches one redflag"""
         sql = "SELECT * FROM incidents WHERE type='{}' AND incident_id='{}' AND user_id ='{}' ".format(
             incident_type, incident_id, current_user)+"ORDER BY created_at DESC"
@@ -113,7 +113,7 @@ class DatabaseConnect:
         incidents = self.cur.fetchone()
         return incidents
 
-    def delete_one_incident(self, incident_type, incident_id, current_user):
+    def delete_one_incident(self, current_user, incident_type, incident_id, ):
         """ function that deletes a redflag record"""
         delete_query = "DELETE FROM incidents WHERE type='{}' AND incident_id = '{}' AND user_id ='{}'".format(
             incident_type, incident_id, current_user)
@@ -121,7 +121,7 @@ class DatabaseConnect:
         self.cur.execute(delete_query)
         return deleted_interv
 
-    def update_location(self, latitude, longitude, incident_type, incident_id, current_user):
+    def update_location(self, current_user, latitude, longitude, incident_type, incident_id):
         """function that updates the location"""
         sql = "UPDATE incidents SET latitude='{}',longitude='{}'".format(
             latitude, longitude) + " WHERE type='{}' AND incident_id='{}' AND user_id ='{}'".format(incident_type, incident_id, current_user)
@@ -145,15 +145,15 @@ class DatabaseConnect:
         stat_id = incident_id
         return stat_id
 
-    def register_users(self, username, email, password, firstname, lastname, othernames, phonenumber, isadmin):
+    def register_users(self, username, email, password, firstname, lastname, othernames, phonenumber):
         """function that registers users """
         created_at = datetime.now()
         sql = "INSERT INTO users(\
                 username, email, password, firstname,\
-                lastname, othername, phonenumber, admin, created_at)"\
-              " VALUES('{}','{}','{}','{}','{}','{}','{}','{}','{}') RETURNING user_id "\
+                lastname, othername, phonenumber,created_at)"\
+              " VALUES('{}','{}','{}','{}','{}','{}','{}','{}') RETURNING user_id "\
               .format(username, email, password, firstname,
-                      lastname, othernames, phonenumber, isadmin, created_at)
+                      lastname, othernames, phonenumber,created_at)
         self.cur.execute(sql)
         user = self.cur.fetchone()
         return user

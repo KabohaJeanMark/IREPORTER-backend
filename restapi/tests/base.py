@@ -25,7 +25,14 @@ class TestDb(unittest.TestCase):
         req = self.app.post(
             '/api/v1/auth/signup', content_type='application/json', data=json.dumps(user_signup_data))
         response = json.loads(req.data.decode())
-        data_list = response['data']
+        user_signin_data = {
+            "username": "Thomas",
+            "password": "yfhv7dtdsd7"
+        }
+        req = self.app.post(
+            '/api/v1/auth/signup', content_type='application/json', data=json.dumps(user_signin_data))
+        signin_response = json.loads(req.data.decode())
+        data_list = signin_response['data']
         return data_list[0]['token']
 
 if __name__ == '__main__':
