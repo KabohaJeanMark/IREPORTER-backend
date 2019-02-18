@@ -108,6 +108,10 @@ class UserController:
                     "message": "successfully logged in",
                     "token": token.decode('UTF-8')
                 }), 200
+            return jsonify({
+                "status": 400,
+                "message":"That user doesn't exist"
+            })
         return jsonify({
             "status": 400,
             "message": "Please enter valid username and password"}), 400

@@ -176,12 +176,11 @@ class DatabaseConnect:
 
     def check_login_user(self, username, password):
         """login user"""
-        sql = "SELECT * FROM users WHERE username='{}' AND password='{}';".format(username,password)
+        sql = "SELECT * FROM users WHERE username='{}' AND password='{}'".format(username,password)
         self.cur.execute(sql)
         users = self.cur.fetchone()
-        if users:
-            return users
-        return False
+        return users
+        
 
     def get_current_user(self, user_id):
         sql = "SELECT * FROM users WHERE username='{}'".format(user_id)
@@ -192,7 +191,7 @@ class DatabaseConnect:
         return False
 
     def get_user(self, username):
-        query = "SELECT * FROM users WHERE username='{}'".format('username')
+        query = "SELECT * FROM users WHERE username='{}'".format(username)
         self.cur.execute(query)
         user = self.cur.fetchone()
         if user:
