@@ -17,8 +17,7 @@ class IncidentController():
                                       incident_type=incident_type,
                                       name=data['name'],
                                       description=data['description'],
-                                      latitude=data['latitude'],
-                                      longitude=data['longitude'],
+                                      location=data['location'],
                                       images=data['images'],
                                       comment=data['comment'],
                                       created_by=current_user['user_id']
@@ -61,7 +60,7 @@ class IncidentController():
         data = request.get_json()
 
         loc_int = DatabaseConnect().update_location( current_user['user_id'],
-            data['latitude'], data['longitude'], incident_type, incident_id)
+            data['location'], incident_type, incident_id)
         if loc_int:
             return jsonify({
                 "status": 201,

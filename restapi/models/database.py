@@ -63,8 +63,7 @@ class DatabaseConnect:
             type VARCHAR (100),
             name VARCHAR(100),
             description VARCHAR(100),
-            latitude VARCHAR(10),
-            longitude VARCHAR(10),
+            location VARCHAR(100),
             status VARCHAR(100) DEFAULT'draft',
             images VARCHAR(100),
             comment VARCHAR(100),
@@ -85,14 +84,14 @@ class DatabaseConnect:
         self.cur.execute("drop table users")
         return print('tables dropped successfully')
 
-    def add_incident(self,incident_type, name, description, latitude, longitude, images, comment, created_by):
+    def add_incident(self,incident_type, name, description, location, images, comment, created_by):
         created_at = datetime.now()
         sql = """INSERT INTO incidents(type,name, \
-                 description,latitude,\
-                longitude,images, comment,\
+                 description,location,\
+                images, comment,\
                 created_at,user_id)\
-                VALUES('{}','{}','{}','{}','{}','{}','{}','{}','{}') RETURNING incident_id"""\
-              .format(incident_type, name, description, latitude, longitude, images, comment, created_at,created_by)
+                VALUES('{}','{}','{}','{}','{}','{}','{}','{}') RETURNING incident_id"""\
+              .format(incident_type, name, description, location, images, comment, created_at,created_by)
         self.cur.execute(sql)
         incident = self.cur.fetchone()
         return incident
@@ -121,10 +120,10 @@ class DatabaseConnect:
         self.cur.execute(delete_query)
         return deleted_interv
 
-    def update_location(self, current_user, latitude, longitude, incident_type, incident_id):
+    def update_location(self, current_user, location, incident_type, incident_id):
         """function that updates the location"""
-        sql = "UPDATE incidents SET latitude='{}',longitude='{}'".format(
-            latitude, longitude) + " WHERE type='{}' AND incident_id='{}' AND user_id ='{}'".format(incident_type, incident_id, current_user)
+        sql = "UPDATE incidents SET location='{}'".format(
+            location) + " WHERE type='{}' AND incident_id='{}' AND user_id ='{}'".format(incident_type, incident_id, current_user)
         self.cur.execute(sql)
         loc_id = incident_id
         return loc_id

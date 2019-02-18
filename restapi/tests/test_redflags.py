@@ -7,12 +7,11 @@ class TestRedflags(TestDb):
     def test_post_redflag(self):
         token = self.create_token()
         redflag_data = {
-            "name": "Ministry of works issue",
+            "name": "Corruption at BOU",
             "description": "Misappropriation of funds",
-            "latitude": "0.0867 N",
-            "longitude": "0.9567E",
-            "images": "home/fund.jpeg",
-            "comment": "This is disturbing"
+            "location": "Kanjyokya street",
+            "images": "home/fundmisuse.jpeg",
+            "comment": "This is shocking"
         
         }
         res = self.app.post(
@@ -27,8 +26,7 @@ class TestRedflags(TestDb):
         redflag_data = {
             "name": "Corruption at BOU",
             "description": "Misappropriation of funds",
-            "latitude": "0.098 N",
-            "longitude": "0.9876 E",
+            "location": "Kanjyokya street",
             "images": "home/fundmisuse.jpeg",
             "comment": "This is shocking"
         }
@@ -44,8 +42,7 @@ class TestRedflags(TestDb):
         redflag_data = {
             "name": "Corruption at BOU",
             "description": "Misappropriation of funds",
-            "latitude": "0.098 N",
-            "longitude": "0.9876 E",
+            "location": "Kanjyokya street",
             "images": "home/fundmisuse.jpeg",
             "comment": "This is shocking"
         }
@@ -62,12 +59,11 @@ class TestRedflags(TestDb):
     def test_get_all_redflags(self):
         token = self.create_token()
         redflag_data = {
-            "name": "Fund misuse",
-            "description": "Misappropiate allocation of funds",
-            "latitude": "0.88666",
-            "longitude": "0.9845",
-            "images": "img/fundmis.jpeg",
-            "comment": "The funds were spilled down the drain"
+            "name": "Corruption at BOU",
+            "description": "Misappropriation of funds",
+            "location": "Kanjyokya street",
+            "images": "home/fundmisuse.jpeg",
+            "comment": "This is shocking"
         }
         res = self.app.post(
             '/api/v1/incidents/redflags', content_type='application/json',
@@ -84,8 +80,7 @@ class TestRedflags(TestDb):
         redflag_data = {
             "name": "Corruption at BOU",
             "description": "Misappropriation of funds",
-            "latitude": "0.098 N",
-            "longitude": "0.9876 E",
+            "location": "Kanjyokya street",
             "images": "home/fundmisuse.jpeg",
             "comment": "This is shocking"
         }
@@ -104,19 +99,16 @@ class TestRedflags(TestDb):
         redflag_data = {
             "name": "Corruption at BOU",
             "description": "Misappropriation of funds",
-            "latitude": "0.098 N",
-            "longitude": "0.9876 E",
+            "location": "Kanjyokya street",
             "images": "home/fundmisuse.jpeg",
             "comment": "This is shocking"
-          
         }
         res = self.app.post(
             '/api/v1/incidents/redflags', content_type='application/json',
             headers={'x-access-token': token}, data=json.dumps(redflag_data))
         self.assertEqual(res.status_code, 201)
         location_data = {
-            "latitude": "0.8675",
-            "longitude": "0.64833"
+            "location": "Cafe Javas Kisementi"
         }
         resp = self.app.patch(
             '/api/v1/incidents/redflags/1/location', content_type='application/json',
@@ -128,8 +120,7 @@ class TestRedflags(TestDb):
         redflag_data = {
             "name": "Corruption at BOU",
             "description": "Misappropriation of funds",
-            "latitude": "0.098 N",
-            "longitude": "0.9876 E",
+            "location": "Kanjyokya street",
             "images": "home/fundmisuse.jpeg",
             "comment": "This is shocking"
            
@@ -151,8 +142,7 @@ class TestRedflags(TestDb):
         redflag_data = {
             "name": "Corruption at BOU",
             "description": "Misappropriation of funds",
-            "latitude": "0.098 N",
-            "longitude": "0.9876 E",
+            "location": "Kanjyokya street",
             "images": "home/fundmisuse.jpeg",
             "comment": "This is shocking"
         }
