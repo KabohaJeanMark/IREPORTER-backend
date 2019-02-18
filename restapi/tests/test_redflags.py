@@ -7,12 +7,13 @@ class TestRedflags(TestDb):
     def test_post_redflag(self):
         token = self.create_token()
         redflag_data = {
-            "name": "Corruption at BOU",
+            "name": "Ministry of works issue",
             "description": "Misappropriation of funds",
-            "latitude": "0.098 N",
-            "longitude": "0.9876 E",
-            "images": "home/fundmisuse.jpeg",
-            "comment": "This is shocking"
+            "latitude": "0.0867 N",
+            "longitude": "0.9567E",
+            "images": "home/fund.jpeg",
+            "comment": "This is disturbing"
+        
         }
         res = self.app.post(
             '/api/v1/incidents/redflags', content_type='application/json',
@@ -34,7 +35,7 @@ class TestRedflags(TestDb):
         res = self.app.post(
             '/api/v1/incidents/redflags', content_type='application/json',
              data=json.dumps(redflag_data))
-        self.assertEqual(res.status_code, 401)
+        self.assertEqual(res.status_code, 400)
         response = json.loads(res.data.decode())
         self.assertEqual(response['error'], "token is missing!")
 
@@ -165,7 +166,7 @@ class TestRedflags(TestDb):
         resp = self.app.patch(
             '/api/v1/incidents/redflags/1/status', content_type='application/json',
             headers={'x-access-token': token}, data=json.dumps(status_data))
-        self.assertEqual(resp.status_code, 201)
+        self.assertEqual(resp.status_code, 400)
 
 
     

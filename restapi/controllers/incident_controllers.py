@@ -72,10 +72,10 @@ class IncidentController():
             }), 201
         return jsonify({'error': 'Incident record is not found'}), 400
 
-    def update_incident_comment(self, incident_type, incident_id):
+    def update_incident_comment(self, current_user, incident_type, incident_id):
         data = request.get_json()
 
-        loc_int = DatabaseConnect().update_comment(
+        loc_int = DatabaseConnect().update_comment(current_user['user_id'],
             data['comment'], incident_type, incident_id)
         if loc_int:
             return jsonify({
@@ -87,8 +87,10 @@ class IncidentController():
             }), 201
         return jsonify({'error': 'Incident record is not found'}), 400
 
-    def admin_update_stat(self, incident_type, incident_id, current_user):
+    def admin_update_stat(self, current_user ,incident_type, incident_id):
+        #return jsonify (current_user)
         if current_user['isadmin']:
+
             data = request.get_json()
             status = data.get('status')
             valid_statuses = ['under investigation', 'rejected', 'resolved']
@@ -109,4 +111,4 @@ class IncidentController():
                     }]
                 }), 201
             return jsonify({'error': 'Incident record is not found'}), 400
-        return jsonify({'error':'This route is only accessible for the administrators'})
+        return jsonify({'error':'This route is only accessible for the administrators'}), 400

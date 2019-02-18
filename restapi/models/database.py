@@ -91,7 +91,7 @@ class DatabaseConnect:
                  description,latitude,\
                 longitude,images, comment,\
                 created_at,user_id)\
-                VALUES('{}','{}','{}','{}','{}','{}','{}','{}',{}') RETURNING incident_id"""\
+                VALUES('{}','{}','{}','{}','{}','{}','{}','{}','{}') RETURNING incident_id"""\
               .format(incident_type, name, description, latitude, longitude, images, comment, created_at,created_by)
         self.cur.execute(sql)
         incident = self.cur.fetchone()
@@ -129,7 +129,7 @@ class DatabaseConnect:
         loc_id = incident_id
         return loc_id
 
-    def update_comment(self, comment, incident_type, incident_id, current_user):
+    def update_comment(self, current_user, comment, incident_type, incident_id):
         """function that updates the comment"""
         sql = "UPDATE incidents SET comment='{}'".format(
             comment) + " WHERE type ='{}' AND incident_id='{}' AND user_id ='{}'".format(incident_type, incident_id, current_user)
