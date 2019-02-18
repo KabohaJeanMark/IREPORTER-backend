@@ -1,52 +1,76 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from restapi.controllers.incident_controllers import IncidentController
-from flask_jwt_extended import jwt_required
+import jwt
+from functools import wraps
 
 bp = Blueprint("incident_views", __name__, url_prefix="/api/v1")
 
 myIncident = IncidentController()
 
 
+def protected(function):
+
+    @wraps(function)
+    def decorated(*args, **kwargs):
+
+        token = None
+        if 'x-access-token' in request.headers:
+            token = request.headers['x-access-token']
+
+        if not token:
+            return jsonify({'error': 'token is missing!'}), 400
+        try:
+            data = jwt.decode(token, 'Secret Key')
+            current_user = {
+                user_id: data["user_id"],
+                is_admin: data["admin"]
+            }
+
+        except:
+            return jsonify({'error': 'token is invalid!'}), 400
+        return function(current_user, *args, **kwargs)
+    return decorated
+
 
 @bp.route("/incidents/<incident_type>", methods=["POST"])
-@jwt_required
-def add_incidents(incident_type):
+@protected
+def add_incidents(incident_type, current_user):
     incident_type = incident_type
-    return myIncident.create_incident(incident_type)
+    return myIncident.create_incident(incident_type, current_user)
 
 
-@jwt_required
 @bp.route("/incidents/<incident_type>", methods=["GET"])
-def get_all_the_incidents(incident_type):
+@protected
+def get_all_the_incidents(incident_type, current_user):
     incident_type = incident_type
-    return myIncident.get_all_incidents(incident_type)
+    return myIncident.get_all_incidents(incident_type, current_user)
 
 
-@jwt_required
 @bp.route("/incidents/<incident_type>/<int:incident_id>", methods=["GET"])
-def get_incident(incident_type, incident_id):
-    return myIncident.get_a_single_incident(incident_type, incident_id)
+@protected
+def get_incident(incident_type, incident_id, current_user):
+    return myIncident.get_a_single_incident(incident_type, incident_id, current_user)
 
 
-@jwt_required
 @bp.route("/incidents/<incident_type>/<int:incident_id>", methods=["DELETE"])
-def delete_redflag(incident_type, incident_id):
-    return myIncident.delete_incident(incident_type, incident_id)
+@protected
+def delete_redflag(incident_type, incident_id, current_user):
+    return myIncident.delete_incident(incident_type, incident_id, current_user)
 
 
-@jwt_required
 @bp.route("/incidents/<incident_type>/<int:incident_id>/comment", methods=["PATCH"])
-def update_incident_comment(incident_type, incident_id):
-    return myIncident.update_incident_comment(incident_type, incident_id)
+@protected
+def update_incident_comment(incident_type, incident_id, current_user):
+    return myIncident.update_incident_comment(incident_type, incident_id, current_user)
 
 
-@jwt_required
 @bp.route("/incidents/<incident_type>/<int:incident_id>/location", methods=["PATCH"])
-def update_incident_location(incident_type, incident_id):
-    return myIncident.update_incident_location(incident_type, incident_id)
+@protected
+def update_incident_location(incident_type, incident_id, current_user):
+    return myIncident.update_incident_location(incident_type, incident_id, current_user)
 
 
-@jwt_required
 @bp.route("/incidents/<incident_type>/<int:incident_id>/status", methods=["PATCH"])
-def update_incident_status(incident_type, incident_id):
-    return myIncident.admin_update_stat(incident_type, incident_id)
+@protected
+def update_incident_status(incident_type, incident_id, current_user):
+    return myIncident.admin_update_stat(incident_type, incident_id, current_user)

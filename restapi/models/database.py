@@ -54,7 +54,7 @@ class DatabaseConnect:
             othername VARCHAR(100)  NOT NULL,
             phonenumber VARCHAR(15)  NOT NULL, 
             created_at VARCHAR(100) NOT NULL,
-            admin BOOLEAN DEFAULT FALSE) 
+            admin BOOLEAN) 
             """
 
         incidents_table = """
@@ -97,42 +97,42 @@ class DatabaseConnect:
         incident = self.cur.fetchone()
         return incident
 
-    def get_all_incident_records(self, incident_type):
+    def get_all_incident_records(self, incident_type, current_user):
         """function that fetches all incidents by type"""
-        sql = """ SELECT * FROM incidents WHERE type='{}' ORDER BY created_at DESC """.format(
-            incident_type)
+        sql = """ SELECT * FROM incidents WHERE type='{}' AND user_id ='{}' ORDER BY created_at DESC """.format(
+            incident_type, current_user)
         self.cur.execute(sql)
         incidents = self.cur.fetchall()
         return incidents
 
-    def get_one_incident(self, incident_type, incident_id):
+    def get_one_incident(self, incident_type, incident_id, current_user):
         """function that fetches one redflag"""
-        sql = "SELECT * FROM incidents WHERE type='{}' AND incident_id='{}'".format(
-            incident_type, incident_id)+"ORDER BY created_at DESC"
+        sql = "SELECT * FROM incidents WHERE type='{}' AND incident_id='{}' AND user_id ='{}' ".format(
+            incident_type, incident_id, current_user)+"ORDER BY created_at DESC"
         self.cur.execute(sql)
         incidents = self.cur.fetchone()
         return incidents
 
-    def delete_one_incident(self, incident_type, incident_id):
+    def delete_one_incident(self, incident_type, incident_id, current_user):
         """ function that deletes a redflag record"""
-        delete_query = "DELETE FROM incidents WHERE type='{}' AND incident_id = '{}'".format(
-            incident_type, incident_id)
+        delete_query = "DELETE FROM incidents WHERE type='{}' AND incident_id = '{}' AND user_id ='{}'".format(
+            incident_type, incident_id, current_user)
         deleted_interv = incident_id
         self.cur.execute(delete_query)
         return deleted_interv
 
-    def update_location(self, latitude, longitude, incident_type, incident_id):
+    def update_location(self, latitude, longitude, incident_type, incident_id, current_user):
         """function that updates the location"""
         sql = "UPDATE incidents SET latitude='{}',longitude='{}'".format(
-            latitude, longitude) + " WHERE type='{}' AND incident_id='{}'".format(incident_type, incident_id)
+            latitude, longitude) + " WHERE type='{}' AND incident_id='{}' AND user_id ='{}'".format(incident_type, incident_id, current_user)
         self.cur.execute(sql)
         loc_id = incident_id
         return loc_id
 
-    def update_comment(self, comment, incident_type, incident_id):
+    def update_comment(self, comment, incident_type, incident_id, current_user):
         """function that updates the comment"""
         sql = "UPDATE incidents SET comment='{}'".format(
-            comment) + " WHERE type ='{}' AND incident_id='{}'".format(incident_type, incident_id)
+            comment) + " WHERE type ='{}' AND incident_id='{}' AND user_id ='{}'".format(incident_type, incident_id, current_user)
         self.cur.execute(sql)
         comm_id = incident_id
         return comm_id
@@ -144,3 +144,57 @@ class DatabaseConnect:
         self.cur.execute(sql)
         stat_id = incident_id
         return stat_id
+
+    def register_users(self, username, email, password, firstname, lastname, othernames, phonenumber, isadmin):
+        """function that registers users """
+        created_at = datetime.now()
+        sql = "INSERT INTO users(\
+                username, email, password, firstname,\
+                lastname, othername, phonenumber, admin, created_at)"\
+              " VALUES('{}','{}','{}','{}','{}','{}','{}','{}','{}') RETURNING user_id "\
+              .format(username, email, password, firstname,
+                      lastname, othernames, phonenumber, isadmin, created_at)
+        self.cur.execute(sql)
+        user = self.cur.fetchone()
+        return user
+
+    def check_email_exists(self, email):
+        """function that checks and validates unique email in db"""
+        sql_email = "SELECT* FROM users WHERE email='{}'".format(
+            email)
+        self.cur.execute(sql_email)
+        row = self.cur.fetchone()
+        return row
+
+    def check_username_exists(self, username):
+        """function that checks and validates unique username in db"""
+        sql_username = "SELECT* FROM users WHERE username='{}'".format(
+            username)
+        self.cur.execute(sql_username)
+        row = self.cur.fetchone()
+        return row
+
+    def check_login_user(self, username, password):
+        """login user"""
+        sql = "SELECT * FROM users WHERE username='{}' AND password='{}';".format(username,password)
+        self.cur.execute(sql)
+        users = self.cur.fetchone()
+        if users:
+            return users
+        return False
+
+    def get_current_user(self, user_id):
+        sql = "SELECT * FROM users WHERE username='{}'".format(user_id)
+        self.cur.execute(sql)
+        user = self.cur.fetchone()
+        if user:
+            return user
+        return False
+
+    def get_user(self, username):
+        query = "SELECT * FROM users WHERE username='{}'".format('username')
+        self.cur.execute(query)
+        user = self.cur.fetchone()
+        if user:
+            return user
+        return False

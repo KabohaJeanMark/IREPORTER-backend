@@ -1,5 +1,4 @@
 from flask import request, jsonify
-from flask_jwt_extended import get_jwt_identity
 from datetime import datetime
 from restapi.models.database import DatabaseConnect
 
@@ -9,7 +8,7 @@ class IncidentController():
     def __init__(self):
         pass
 
-    def create_incident(self, incident_type):
+    def create_incident(self, incident_type, current_user):
 
         db = DatabaseConnect()
         data = request.get_json()
@@ -21,7 +20,7 @@ class IncidentController():
                                       longitude=data['longitude'],
                                       images=data['images'],
                                       comment=data['comment'],
-                                      created_by=get_jwt_identity()
+                                      created_by=current_user['user_id']
 
                                       )
 
@@ -32,8 +31,8 @@ class IncidentController():
                 "message": "Created incident record"}]
         }), 201
 
-    def get_all_incidents(self, incident_type):
-        redflag = DatabaseConnect().get_all_incident_records(incident_type)
+    def get_all_incidents(self, incident_type, current_user):
+        redflag = DatabaseConnect().get_all_incident_records(incident_type, current_user)
         if redflag:
             return jsonify({'status': 200,
                             'data': redflag})
@@ -88,24 +87,26 @@ class IncidentController():
             }), 201
         return jsonify({'error': 'Incident record is not found'}), 400
 
-    def admin_update_stat(self, incident_type, incident_id):
-        data = request.get_json()
-        status = data.get('status')
-        valid_statuses = ['under investigation', 'rejected', 'resolved']
-        if status not in valid_statuses:
-            return jsonify({
-                "status": 400,
-                "message": "The new status should be either 'under investigation','rejected' or 'resolved "
-            }), 400
+    def admin_update_stat(self, incident_type, incident_id, current_user):
+        if current_user['isadmin']:
+            data = request.get_json()
+            status = data.get('status')
+            valid_statuses = ['under investigation', 'rejected', 'resolved']
+            if status not in valid_statuses:
+                return jsonify({
+                    "status": 400,
+                    "message": "The new status should be either 'under investigation','rejected' or 'resolved "
+                }), 400
 
-        update_int = DatabaseConnect().admin_update_status(
-            data['status'], incident_type, incident_id)
-        if update_int:
-            return jsonify({
-                "status": 201,
-                "data": [{
-                    "id": update_int,
-                    "message": "Updated incident's status"
-                }]
-            }), 201
-        return jsonify({'error': 'Incident record is not found'}), 400
+            update_int = DatabaseConnect().admin_update_status(
+                data['status'], incident_type, incident_id)
+            if update_int:
+                return jsonify({
+                    "status": 201,
+                    "data": [{
+                        "id": update_int,
+                        "message": "Updated incident's status"
+                    }]
+                }), 201
+            return jsonify({'error': 'Incident record is not found'}), 400
+        return jsonify({'error':'This route is only accessible for the administrators'})
