@@ -6,6 +6,9 @@ BP = Blueprint("user_views", __name__, url_prefix="/api/v1")
 
 myUser = UserController()
 
+@BP.route("/", methods=["GET"])
+def home_page():
+    return jsonify({"Message": "Welcome to Ireporter"})
 
 @BP.route("/auth/signup", methods=["POST"])
 def add_user():

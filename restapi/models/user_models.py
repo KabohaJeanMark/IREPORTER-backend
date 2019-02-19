@@ -7,15 +7,15 @@ class Users:
     def __init__(self):
         self.conn = DatabaseConnect()
 
-    def register_users(self, username, email, password, firstname, lastname, othernames, phonenumber):
+    def register_users(self, username, email, password, firstname, lastname, othernames, phonenumber, isadmin):
         """function that registers users """
         created_at = datetime.now()
         sql = "INSERT INTO users(\
                 username, email, password, firstname,\
-                lastname, othername, phonenumber, created_at)"\
-              " VALUES('{}','{}','{}','{}','{}','{}','{}','{}') RETURNING username "\
+                lastname, othername, phonenumber, admin, created_at)"\
+              " VALUES('{}','{}','{}','{}','{}','{}','{}','{}','{}') RETURNING user_id "\
               .format(username, email, password, firstname,
-                      lastname, othernames, phonenumber, created_at)
+                      lastname, othernames, phonenumber, isadmin, created_at)
         self.conn.cur.execute(sql)
         user = self.conn.cur.fetchone()
         return user
@@ -44,9 +44,20 @@ class Users:
         users = self.conn.cur.fetchone()
         return users
 
-    def get_user(self, user_id):
-        """checks whether the current user is an admin"""
-        sql = "SELECT * FROM users WHERE user_id='{}'".format(user_id)
+    def get_current_user(self, user_id):
+        sql = "SELECT * FROM users WHERE username='{}'".format(user_id)
         self.conn.cur.execute(sql)
-        role = self.conn.cur.fetchone()
-        return role
+        user = self.conn.cur.fetchone()
+        if user:
+            return user
+        return False
+
+    def get_user(self, username):
+        query = "SELECT * FROM users WHERE username='{}'".format('username')
+        self.conn.cur.execute(query)
+        user = self.conn.cur.fetchone()
+        if user:
+            return user
+        return False
+
+
