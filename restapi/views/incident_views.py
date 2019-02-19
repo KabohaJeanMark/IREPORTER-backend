@@ -36,6 +36,10 @@ def protected(function):
 def add_incidents(current_user, incident_type):
     return myIncident.create_incident(current_user,incident_type)
 
+@bp.route("/incidents", methods =["GET"])
+def get_all_incidents():
+    return myIncident.get_all_the_incidents()
+
 
 @bp.route("/incidents/<incident_type>", methods=["GET"])
 @protected
@@ -68,7 +72,12 @@ def update_incident_location(current_user,incident_type, incident_id):
     return myIncident.update_incident_location(current_user,incident_type, incident_id)
 
 
-@bp.route("/incidents/<incident_type>/<int:incident_id>/status", methods=["PATCH"])
-@protected
-def update_incident_status(current_user,incident_type, incident_id):
-    return myIncident.admin_update_stat(current_user,incident_type, incident_id)
+# @bp.route("/incidents/<incident_type>/<int:incident_id>/status", methods=["PATCH"])
+# @protected
+# def update_incident_status(current_user,incident_type, incident_id):
+#     return myIncident.admin_update_stat(current_user,incident_type, incident_id)
+
+@bp.route("/incidents/<int:incident_id>/status", methods=["PATCH"])
+def admin_update_status(incident_id):
+    return myIncident.admin_update_stat(incident_id)
+
