@@ -136,13 +136,22 @@ class DatabaseConnect:
         comm_id = incident_id
         return comm_id
 
-    def admin_update_status(self, status, incident_type, incident_id):
+    # def admin_update_status(self, status, incident_type, incident_id):
+    #     """function that enables the admin to update the incident status"""
+    #     sql = "UPDATE incidents SET status='{}'".format(
+    #         status) + " WHERE type='{}' AND incident_id='{}'".format(incident_type, incident_id)
+    #     self.cur.execute(sql)
+    #     stat_id = incident_id
+    #     return stat_id
+    
+    def admin_update_status(self, status, incident_id):
         """function that enables the admin to update the incident status"""
         sql = "UPDATE incidents SET status='{}'".format(
-            status) + " WHERE type='{}' AND incident_id='{}'".format(incident_type, incident_id)
+            status) + " WHERE incident_id='{}'".format(incident_id)
         self.cur.execute(sql)
         stat_id = incident_id
         return stat_id
+
 
     def register_users(self, username, email, password, firstname, lastname, othernames, phonenumber):
         """function that registers users """
@@ -196,3 +205,10 @@ class DatabaseConnect:
         if user:
             return user
         return False
+
+    def get_all_inc_records(self):
+        """function that fetches all incidents for admin"""
+        sql = """ SELECT * FROM incidents ORDER BY created_at DESC """
+        self.cur.execute(sql)
+        incidents = self.cur.fetchall()
+        return incidents
