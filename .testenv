@@ -1,4 +1,3 @@
-
 export "DB_NAME"="testdb"
 export "DB_USER"="postgres"
 export "DB_HOST"="localhost"

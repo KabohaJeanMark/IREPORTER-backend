@@ -14,16 +14,17 @@ class DatabaseConnect:
             self.user = "postgres"
             self.password = ""
             self.host = "127.0.0.1"
-        elif os.getenv('DB_NAME') == "proddb":
-            self.dbname = "ddo76jqcvdgpp6"
-            self.user = "iahxwhjlgkymau"
-            self.password = "86ca7ea32a682d6e997410bd6ce1093093a51f2b3ba4ba9c9bb5a2efb0598e41"
-            self.host = "ec2-54-221-253-228.compute-1.amazonaws.com"
-        else:
+        elif os.getenv('DB_NAME') == "ireporter":
             self.dbname = "ireporter"
             self.user = "postgres"
             self.password = ""
             self.host = "127.0.0.1"
+        else:
+            self.dbname = "ddo76jqcvdgpp6"
+            self.user = "iahxwhjlgkymau"
+            self.password = "86ca7ea32a682d6e997410bd6ce1093093a51f2b3ba4ba9c9bb5a2efb0598e41"
+            self.host = "ec2-54-221-253-228.compute-1.amazonaws.com"
+        
         try:
             self.connection = psycopg2.connect(
                 dbname=self.dbname,
@@ -107,7 +108,7 @@ class DatabaseConnect:
     def get_one_incident(self,current_user, incident_type, incident_id):
         """function that fetches one redflag"""
         sql = "SELECT * FROM incidents WHERE type='{}' AND incident_id='{}' AND user_id ='{}' ".format(
-            incident_type, incident_id, current_user)+"ORDER BY created_at DESC"
+            incident_type, incident_id, current_user)
         self.cur.execute(sql)
         incidents = self.cur.fetchone()
         return incidents
@@ -188,6 +189,13 @@ class DatabaseConnect:
         self.cur.execute(sql)
         users = self.cur.fetchone()
         return users
+
+    # def check_login_admin(self, username, password):
+    #     """login user"""
+    #     sql = "SELECT * FROM users WHERE username='{}' AND password='{}' AND admin='True'".format(username,password)
+    #     self.cur.execute(sql)
+    #     users = self.cur.fetchone()
+    #     return users
         
 
     def get_current_user(self, user_id):
@@ -212,3 +220,17 @@ class DatabaseConnect:
         self.cur.execute(sql)
         incidents = self.cur.fetchall()
         return incidents
+    
+    def get_users_db(self):
+        sql = "SELECT * FROM users ORDER BY created_at DESC"
+        self.cur.execute(sql)
+        user = self.cur.fetchall()
+        if user:
+            return user
+        return False
+
+    def admin_change_user_role(self, user_role, user_id):
+        sql = "UPDATE users SET admin = '{}'".format(user_role) + " WHERE user_id ='{}'".format(user_id)
+        self.cur.execute(sql)
+        admin_id = user_id
+        return admin_id

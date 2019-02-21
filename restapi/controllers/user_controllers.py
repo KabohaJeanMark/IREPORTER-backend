@@ -14,12 +14,6 @@ class UserController:
 
     def create_users(self):
         data = request.get_json()
-        username = data['username']
-        last_name =data['last_name']
-        othernames = data['othernames']
-        phone_number = data['phone_number']
-        email = data['email']
-        password = data['password']
         if not data:
             return jsonify({
                 "status": "400",
@@ -53,7 +47,8 @@ class UserController:
                 "status": "400",
                 "message": "The email address is in the wrong format"
             }), 400
-        user_exist = self.database.check_username_exists(username=data['username'])
+        user_exist = self.database.check_username_exists(
+            username=data['username'])
         if user_exist:
             return jsonify({
                 "status": 400,
@@ -67,14 +62,14 @@ class UserController:
             }), 400
 
         reg_user_id = self.database.register_users(username=data['username'],
-                                           email=data['email'],
-                                           password=data['password'],
-                                           firstname=data['first_name'],
-                                           lastname=data['last_name'],
-                                           othernames=data['othernames'],
-                                           phonenumber=data['phone_number']
-                                           
-                                           )
+                                                   email=data['email'],
+                                                   password=data['password'],
+                                                   firstname=data['first_name'],
+                                                   lastname=data['last_name'],
+                                                   othernames=data['othernames'],
+                                                   phonenumber=data['phone_number']
+
+                                                   )
 
         return jsonify({
             "status": 201,
@@ -88,13 +83,18 @@ class UserController:
         """endpoint for logging in  users"""
         data = request.get_json()
 
+        user_login = self.database.check_login_user(
+            data['username'], data['password'])
         
-
-        user_login = self.database.check_login_user(data['username'], data['password'])
+            
 
         if user_login:
             user = self.database.get_user(data['username'])
             if user:
+                if (user_login['admin'] == False):
+                    role = "user"
+                else:
+                    role = "admin"
                 payload = {
                     'user_id': user['user_id'],
                     'first_name': user['firstname'],
@@ -111,13 +111,38 @@ class UserController:
                 token = jwt.encode(payload, 'Secret Key')
 
                 return jsonify({
-                    "message": "successfully logged in",
+                    "message": "successfully logged in " + role,
                     "token": token.decode('UTF-8')
                 }), 200
             return jsonify({
                 "status": 400,
-                "message":"That user doesn't exist"
+                "message": "That user doesn't exist"
             })
         return jsonify({
             "status": 400,
             "message": "Please enter valid username and password"}), 400
+
+        admin_login = self.database.check_login_user(
+            data['username'], data['password'])
+
+    def get_all_users(self):
+        users = self.database.get_users_db()
+        if users:
+            return jsonify({'status': 200,
+                            'data': users})
+        return jsonify({'error': 'User records are not found'}), 400
+
+    def admin_make_user_admin(self, user_id):
+        data = request.get_json()
+
+        updated_role = DatabaseConnect().admin_change_user_role(
+            data['user_role'], user_id)
+        if updated_role:
+            return jsonify({
+                "status": 201,
+                "data": [{
+                    "id": updated_role,
+                    "message": "Updated user's role to admin"
+                }]
+            }), 201
+        return jsonify({'error': 'User record is not found'}), 400
