@@ -85,17 +85,16 @@ class UserController:
 
         user_login = self.database.check_login_user(
             data['username'], data['password'])
-        print(user_login)
-        print(user_login['admin'])
-        if (user_login['admin'] == False):
-            role = "user"
-        else:
-            role = "admin"
+        
             
 
         if user_login:
             user = self.database.get_user(data['username'])
             if user:
+                if (user_login['admin'] == False):
+                    role = "user"
+                else:
+                    role = "admin"
                 payload = {
                     'user_id': user['user_id'],
                     'first_name': user['firstname'],
