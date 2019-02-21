@@ -108,7 +108,7 @@ class DatabaseConnect:
     def get_one_incident(self,current_user, incident_type, incident_id):
         """function that fetches one redflag"""
         sql = "SELECT * FROM incidents WHERE type='{}' AND incident_id='{}' AND user_id ='{}' ".format(
-            incident_type, incident_id, current_user)+"ORDER BY created_at DESC"
+            incident_type, incident_id, current_user)
         self.cur.execute(sql)
         incidents = self.cur.fetchone()
         return incidents
@@ -213,3 +213,11 @@ class DatabaseConnect:
         self.cur.execute(sql)
         incidents = self.cur.fetchall()
         return incidents
+    
+    def get_users_db(self):
+        sql = "SELECT * FROM users ORDER BY created_at DESC"
+        self.cur.execute(sql)
+        user = self.cur.fetchall()
+        if user:
+            return user
+        return False

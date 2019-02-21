@@ -15,7 +15,7 @@ class UserController:
     def create_users(self):
         data = request.get_json()
         username = data['username']
-        last_name =data['last_name']
+        last_name = data['last_name']
         othernames = data['othernames']
         phone_number = data['phone_number']
         email = data['email']
@@ -53,7 +53,8 @@ class UserController:
                 "status": "400",
                 "message": "The email address is in the wrong format"
             }), 400
-        user_exist = self.database.check_username_exists(username=data['username'])
+        user_exist = self.database.check_username_exists(
+            username=data['username'])
         if user_exist:
             return jsonify({
                 "status": 400,
@@ -67,14 +68,14 @@ class UserController:
             }), 400
 
         reg_user_id = self.database.register_users(username=data['username'],
-                                           email=data['email'],
-                                           password=data['password'],
-                                           firstname=data['first_name'],
-                                           lastname=data['last_name'],
-                                           othernames=data['othernames'],
-                                           phonenumber=data['phone_number']
-                                           
-                                           )
+                                                   email=data['email'],
+                                                   password=data['password'],
+                                                   firstname=data['first_name'],
+                                                   lastname=data['last_name'],
+                                                   othernames=data['othernames'],
+                                                   phonenumber=data['phone_number']
+
+                                                   )
 
         return jsonify({
             "status": 201,
@@ -88,9 +89,8 @@ class UserController:
         """endpoint for logging in  users"""
         data = request.get_json()
 
-        
-
-        user_login = self.database.check_login_user(data['username'], data['password'])
+        user_login = self.database.check_login_user(
+            data['username'], data['password'])
 
         if user_login:
             user = self.database.get_user(data['username'])
@@ -116,8 +116,15 @@ class UserController:
                 }), 200
             return jsonify({
                 "status": 400,
-                "message":"That user doesn't exist"
+                "message": "That user doesn't exist"
             })
         return jsonify({
             "status": 400,
             "message": "Please enter valid username and password"}), 400
+
+    def get_all_users(self):
+        users = self.database.get_users_db()
+        if users:
+            return jsonify({'status': 200,
+                            'data': users})
+        return jsonify({'error': 'User records are not found'}), 400
