@@ -85,6 +85,13 @@ class UserController:
 
         user_login = self.database.check_login_user(
             data['username'], data['password'])
+        print(user_login)
+        print(user_login['admin'])
+        if (user_login['admin'] == False):
+            role = "user"
+        else:
+            role = "admin"
+            
 
         if user_login:
             user = self.database.get_user(data['username'])
@@ -105,7 +112,7 @@ class UserController:
                 token = jwt.encode(payload, 'Secret Key')
 
                 return jsonify({
-                    "message": "successfully logged in",
+                    "message": "successfully logged in " + role,
                     "token": token.decode('UTF-8')
                 }), 200
             return jsonify({
@@ -115,6 +122,9 @@ class UserController:
         return jsonify({
             "status": 400,
             "message": "Please enter valid username and password"}), 400
+
+        admin_login = self.database.check_login_user(
+            data['username'], data['password'])
 
     def get_all_users(self):
         users = self.database.get_users_db()

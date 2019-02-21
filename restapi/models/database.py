@@ -189,6 +189,13 @@ class DatabaseConnect:
         self.cur.execute(sql)
         users = self.cur.fetchone()
         return users
+
+    # def check_login_admin(self, username, password):
+    #     """login user"""
+    #     sql = "SELECT * FROM users WHERE username='{}' AND password='{}' AND admin='True'".format(username,password)
+    #     self.cur.execute(sql)
+    #     users = self.cur.fetchone()
+    #     return users
         
 
     def get_current_user(self, user_id):
