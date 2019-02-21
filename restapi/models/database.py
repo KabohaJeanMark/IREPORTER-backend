@@ -221,3 +221,9 @@ class DatabaseConnect:
         if user:
             return user
         return False
+
+    def admin_change_user_role(self, user_role, user_id):
+        sql = "UPDATE users SET admin = '{}'".format(user_role) + " WHERE user_id ='{}'".format(user_id)
+        self.cur.execute(sql)
+        admin_id = user_id
+        return admin_id

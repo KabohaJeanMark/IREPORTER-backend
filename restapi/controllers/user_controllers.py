@@ -14,12 +14,6 @@ class UserController:
 
     def create_users(self):
         data = request.get_json()
-        username = data['username']
-        last_name = data['last_name']
-        othernames = data['othernames']
-        phone_number = data['phone_number']
-        email = data['email']
-        password = data['password']
         if not data:
             return jsonify({
                 "status": "400",
@@ -128,3 +122,18 @@ class UserController:
             return jsonify({'status': 200,
                             'data': users})
         return jsonify({'error': 'User records are not found'}), 400
+
+    def admin_make_user_admin(self, user_id):
+        data = request.get_json()
+
+        updated_role = DatabaseConnect().admin_change_user_role(
+            data['user_role'], user_id)
+        if updated_role:
+            return jsonify({
+                "status": 201,
+                "data": [{
+                    "id": updated_role,
+                    "message": "Updated user's role to admin"
+                }]
+            }), 201
+        return jsonify({'error': 'User record is not found'}), 400
