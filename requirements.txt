@@ -31,7 +31,7 @@ psycopg2==2.7.6.1
 py==1.7.0
 pycodestyle==2.4.0
 pycparser==2.19
-PyJWT==1.6.1
+PyJWT==2.4.0
 pylint==2.2.2
 pytest==3.10.1
 pytest-cov==2.6.1
