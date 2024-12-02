@@ -1,6 +1,6 @@
 # iREPORTER
 
-[![Build Status](https://travis-ci.com/KabohaJeanMark/IREPORTER-CHALLENGE-3.svg?branch=develop)](https://travis-ci.com/KabohaJeanMark/IREPORTER-CHALLENGE-3) [![Coverage Status](https://coveralls.io/repos/github/KabohaJeanMark/IREPORTER-CHALLENGE-3/badge.svg?branch=ch-feedback-163456258)](https://coveralls.io/github/KabohaJeanMark/IREPORTER-CHALLENGE-3?branch=ch-feedback-163456258) [![Maintainability](https://api.codeclimate.com/v1/badges/34cd9b3182e2be45386e/maintainability)](https://codeclimate.com/github/KabohaJeanMark/IREPORTER-CHALLENGE-3/maintainability)
+[![Coverage Status](https://coveralls.io/repos/github/KabohaJeanMark/IREPORTER-CHALLENGE-3/badge.svg?branch=ch-feedback-163456258)](https://coveralls.io/github/KabohaJeanMark/IREPORTER-CHALLENGE-3?branch=ch-feedback-163456258) [![Maintainability](https://api.codeclimate.com/v1/badges/34cd9b3182e2be45386e/maintainability)](https://codeclimate.com/github/KabohaJeanMark/IREPORTER-CHALLENGE-3/maintainability)
 
 ## About
 iReporter gives all citizens a platfrom to raise concerns about corruption and corruption red-flag cases and the need for government intervention in situations.
